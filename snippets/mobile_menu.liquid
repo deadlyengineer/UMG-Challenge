@@ -1,0 +1,71 @@
+{%- if request.design_mode -%}
+  {% section 'mobile_menu' %}
+{%- endif -%}
+
+<script >
+  var is_mobile_menu_loaded = true;
+  console.log('%c adding mobile menu!', "background-color:green; color: white; padding: 4px;");
+
+  function load_mobile_menu() {
+    if(!is_mobile_menu_loaded && window.innerWidth < 900) {
+
+      $('body').append(`<div id="shopify-section-mobile_menu" class="shopify-section"></div>`);
+
+      $.ajax({url: '/?section_id=mobile_menu', type: 'GET'}).then(res => {
+        $('#shopify-section-mobile_menu').html(res);
+        is_mobile_menu_loaded = true;
+
+        console.log('%c added mobile menu!', "background-color:green; color: white; padding: 4px;");
+
+        const mobile_menu = document.getElementById('nav_overlay');
+        if(window.scrollY > 50) {
+          $('#shopify-section-mobile_menu').addClass('stickied');
+        } else {
+          $('#shopify-section-mobile_menu').removeClass('stickied');
+        }
+      })
+
+    }
+  }
+        
+  function show_mobile_menu() {
+    if(!is_mobile_menu_loaded) {
+      $('body').append(`<div id="shopify-section-mobile_menu" class="shopify-section"></div>`);
+
+      $.ajax({url: '/?section_id=mobile_menu', type: 'GET'}).then(res => {
+        $('#shopify-section-mobile_menu').html(res);
+        is_mobile_menu_loaded = true;
+
+        console.log('%c added mobile menu!', "background-color:green; color: white; padding: 4px;");
+
+        const mobile_menu = document.getElementById('nav_overlay');
+        if(window.scrollY > 50) {
+          $('#shopify-section-mobile_menu').addClass('stickied');
+        } else {
+          $('#shopify-section-mobile_menu').removeClass('stickied');
+        }
+      }).done(function() {
+        $('.hamburger').addClass('menu_open');
+        $('#nav_overlay').addClass('m_menu_opened');
+        show_overlay();
+        
+      })
+    } else {
+      $('.hamburger').addClass('menu_open');
+      $('#nav_overlay').addClass('m_menu_opened');
+      show_overlay();
+      
+    }
+  }
+
+  function hide_mobile_menu() {
+    $('.m_menu_opened').removeClass('m_menu_opened');
+    $('.hamburger').removeClass('menu_open');
+    hide_overlay();
+  }
+
+  {%- unless request.design_mode -%}
+    is_mobile_menu_loaded = false;
+    setTimeout(load_mobile_menu, 10000);
+  {%- endunless -%}
+</script> 

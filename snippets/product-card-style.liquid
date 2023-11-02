@@ -1,0 +1,132 @@
+<style>
+  .pd_card_wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #FFF;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  .badge_wrapper {
+    position: absolute;
+    top: 25px;
+    left: 0;
+  }
+
+  a.pd_media {
+    text-decoration: none;
+    padding: 15px 15px 20px;
+  }
+
+  .pd_featured_img {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 100%;
+    width: 100%;
+  }
+
+  a.pd_title {
+    text-decoration: none;
+    font: normal normal 900 18px/22px Basis Grotesque Pro;
+    color: #001C72;
+    letter-spacing: 0px;
+    display: block;
+    margin-bottom: auto;
+  }
+
+  .pd_info {
+    padding: 0 24px 30px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .swiper-slide {
+    height: auto;
+  }
+
+  .pd_price {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .r_price {
+    font: normal normal 900 16px/18px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #FF75B1;
+  }
+
+  .c_price {
+    text-decoration: line-through;
+    font: normal normal 900 16px/18px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #9F9F9F;
+    margin-left: 6px;
+  }
+
+  .badge_wrapper > div {
+    border-radius: 0 100px 100px 0;
+    font: normal normal 700 14px/16px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    padding: 6px 11px;
+    margin-bottom: 5px;
+  }
+
+  .badge_wrapper .best_badge {
+    background-color: #4DD19E;
+  }
+
+  .badge_wrapper .soldout_badge {
+    background-color: black;  
+    color: white;
+  }
+
+  .badge_wrapper .new_badge {
+    background-color: #7EDFFF;
+    color: #001C72;
+  }
+
+  @media screen and (max-width: 900px) {
+    .pd_card_wrapper {
+      border-radius: 6px;
+    }
+
+    a.pd_media {
+      padding: 5px 5px 10px;
+    }
+
+    .pd_info {
+      padding: 0 9px 15px;
+    }
+
+    a.pd_title {
+      font: normal normal 900 13px/15px Basis Grotesque Pro;
+    }
+
+    .r_price {
+      font-size: 13px;
+      line-height: 15px;
+    }
+
+    .c_price {
+      font-size: 14px;
+      line-height: 15px;
+      margin-left: 4px;
+    }
+
+    .badge_wrapper {
+      top: 12px;
+    }
+
+    .badge_wrapper > div {
+      padding: 5px 12px;
+      font-size: 10px;
+      line-height: 11px;
+    }
+  }
+</style>

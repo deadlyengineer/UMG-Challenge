@@ -1,0 +1,11 @@
+{% if size == nil %}
+  <svg id="round-mask" viewBox="0 0 1520 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M798 29.9997C798 29.9997 1216 26 1520 0V29.9997L798 29.9997L0 30V0C354.667 26 798 29.9997 798 29.9997Z" fill="{{ color }}"/>
+  </svg>
+
+{% else %}
+  <svg id="round-mask-small" viewBox="0 0 360 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M180.545 29.9283C180.545 29.9283 288 26 360 0V29.9282L180.545 29.9283L0 29.9285V0C84 26.4998 180.545 29.9283 180.545 29.9283Z" fill="{{ color }}"/>
+  </svg>
+
+{% endif %}

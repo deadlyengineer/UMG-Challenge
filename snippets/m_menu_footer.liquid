@@ -1,0 +1,213 @@
+<style>
+  .m_menu_footer p {
+    font: normal normal normal 12px / 15px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #242424;
+    text-align: center;
+    padding: 6px 0;
+  }
+
+  .m_service_menu_container {
+    margin: 26px 0 12px;
+  }
+
+  .m_service_menu_container > div {
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .m_service_title {
+    text-align: left;
+    font: normal normal 600 12px / 15px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #000000;
+    padding: 9px 0;
+    border-bottom: 1px solid #E9E9E9;
+    margin-bottom: 7px;
+  }
+
+  .m_service_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .m_service_link {
+    width: 100%;
+    text-align: left;
+    font: normal normal normal 12px / 15px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #000000;
+    padding: 6px 0;
+  }
+  .m_two_service_container .m_service_link {
+    width: 50%;
+  }
+  .cout-popup {
+    display: flex;
+    background: #F3F3F3 0 0 no-repeat padding-box;
+    justify-content: space-between;
+    padding: 15px;
+    cursor: pointer;
+    min-height: 45px;
+  }
+
+  .cout-popup span {
+    text-align: left;
+    font: normal normal normal 12px / 15px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #000000;
+    text-transform: uppercase;
+  }
+
+  .cout-popup img {
+    width: 13px;
+  }
+  .m_instruct {
+    padding: 24px 0 13px;
+    font: normal normal normal 12px / 18px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #818181;
+  }
+
+  .m_podcast_container {
+    padding-bottom: 142px;
+  }
+  .m_podcast_container a {
+    text-align: left;
+    font: normal normal normal 12px / 15px Neue Haas Grotesk Text Pro;
+    letter-spacing: 0;
+    color: #FFFFFF;
+    background: black;
+    display: block;
+    width: fit-content;
+    padding: 14px 14px 13px 15px;
+  }
+</style>
+<div class="m_menu_footer">
+  <a class="m_menu_shopall" href="{{ collections['all'].url }}">shop all mens</a>
+
+  {% assign has_freeshipping_price = true %}
+  {% case localization.country %} 
+      {% when 'Australia' %}
+          {% assign freeshipping_threshold = 170 %}
+
+      {% when 'Bulgaria' %}
+          {% assign freeshipping_threshold = 235 %}
+
+      {% when 'Canada' %}
+          {% assign freeshipping_threshold = 230 %}
+
+      {% when 'Chile' %}
+          {% assign freeshipping_threshold = 112475 %}
+
+      {% when 'Croatia' %}
+          {% assign freeshipping_threshold = 110 %}
+
+      {% when 'Hungary' %}
+          {% assign freeshipping_threshold = 40310 %}
+          
+      {% when 'Ireland' %}
+          {% assign freeshipping_threshold = 100 %}
+
+      {% when 'Israel' %}
+          {% assign freeshipping_threshold = 390 %}
+
+      {% when 'Japan' %}
+          {% assign freeshipping_threshold = 19300 %}
+
+      {% when 'Mexico' %}
+          {% assign freeshipping_threshold = 2410 %}
+
+      {% when 'New Zealand' %}
+          {% assign freeshipping_threshold = 195 %}
+
+      {% when 'Norway' %}
+          {% assign freeshipping_threshold = 1100 %}
+
+      {% when 'Poland' %}
+          {% assign freeshipping_threshold = 470 %}
+
+      {% when 'Qatar' %}
+          {% assign freeshipping_threshold = 435 %}
+
+      {% when 'Spain' %}
+          {% assign freeshipping_threshold = 100 %}
+
+      {% when 'Sweden' %}
+          {% assign freeshipping_threshold = 1100 %}
+
+      {% when 'Switzerland' %}
+          {% assign freeshipping_threshold = 100 %}
+
+      {% when 'Turkey' %}
+          {% assign freeshipping_threshold = 2160 %}
+
+      {% when 'United Arab Emirates' %}
+          {% assign freeshipping_threshold = 535 %}
+
+      {% when 'United States' %}
+          {% assign freeshipping_threshold = 90 %}
+
+      {% when 'United Kingdom' %}
+          {% assign freeshipping_threshold = 75 %}
+
+      {% else %}
+          {% assign has_freeshipping_price = false %}
+  {% endcase %}
+    
+  {% if has_freeshipping_price == true %}
+    <p>Free shipping on orders over {{ freeshipping_threshold | times: 100 | money }}</p>
+  {% endif %}
+
+  <div class="m_service_menu_container">
+    {% for block in blocks %}
+      {% if block.type == 'one-column' %}
+        <div class="m_one_service_container">
+          <div class="m_service_title">
+            {{ block.settings.title }}
+          </div>
+          <div class="m_service_wrapper">
+            {%- assign block_links = block.settings.links.links -%}
+            {% for link in block_links %}
+              <a href="{{ link.url }}" class="m_service_link">{{ link.title }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% elsif block.type == 'two-column' %}
+        <div class="m_two_service_container">
+          <div class="m_service_title">
+            {{ block.settings.title }}
+          </div>
+          <div class="m_service_wrapper">
+            {%- assign block_links = block.settings.links.links -%}
+            {% for link in block_links %}
+              <a href="{{ link.url }}" class="m_service_link">{{ link.title }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="cout-popup">
+    <span>
+      {{ localization.country.currency.iso_code }} ({{ cart.currency.symbol }}) / {{ localization.language.name }}
+    </span>
+    <img src="{{ 'arrow.svg' | asset_url }}" alt="left arrow">
+  </div>
+  <div class="m_podcast_container">
+    {%- for block in blocks -%}
+      {%- if block.type == 'podcast' -%}
+        <div class="m_instruct">{{ block.settings.podcast_content }}</div>
+        <a href="{{ block.settings.podcast_url }}">{{ block.settings.title }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  $('.cout-popup').click(function() {
+    hide_mobile_menu();
+    show_country_popup();
+  });
+</script>

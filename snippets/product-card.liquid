@@ -1,0 +1,46 @@
+{% liquid
+    for tag in product.tags
+        if tag == "best sellers"
+            assign tag_best = true
+        endif
+        if tag == "new_products"        
+            assign tag_new = true
+        endif
+    endfor
+    unless product.available
+        assign soldout = true
+    endunless
+%}
+
+<div class="pd_card_wrapper">
+    <a class="pd_media" href="{{ product.url }}">
+        <div class="pd_featured_img" style="background-image: url({{ product.featured_image | img_url: '350x' }})"> </div>
+    </a>
+    <div class="pd_info">
+        <div class="pd_review">
+            {% assign product_id = product.id | downcase %}
+            {% if shop.metafields.loox.stats[product_id].num > 0 %}
+              {% render 'app__loox-star-rating' %}
+              <a href="#looxReviews" class="review__text">{{shop.metafields.loox.stats[product_id].num}} {{ shop.metafields.loox.stats[product_id].num | pluralize: 'Review', 'Reviews' }}</a>
+            {% endif %}
+        </div>
+        <a class="pd_title" href="{{ product.url }}">{{ product.title }}</a>
+        <div class="pd_price">
+            <div class="r_price">{{ product.price | money }}</div>
+            {% if product.compare_at_price_max > product.price %}
+                <div class="c_price">{{ product.compare_at_price_max | money }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="badge_wrapper">
+        {% if tag_best %}
+            <div class="best_badge">BESTSELLER</div>
+        {% endif %}
+        {% if tag_new %}
+            <div class="new_badge">NEW IN</div>
+        {% endif %}
+        {% if soldout %}
+            <div class="soldout_badge">SOLD OUT</div>
+        {% endif %}
+    </div>
+</div>

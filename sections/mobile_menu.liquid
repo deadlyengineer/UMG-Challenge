@@ -1,0 +1,554 @@
+{% assign _ss = section.settings %}
+{% assign _section = section.id | split: '__' | last | slice: -4, 4 | prepend: '#sn_' %}
+
+{%- capture section_content -%}
+  <style>
+    div#nav_overlay::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media screen and (min-width: 901px) {
+      #nav_overlay {
+        transform: translateX(-100%)!important;
+      }
+      #nav_overlay.mega_mobile_holder {
+        top: 65px;
+        height: calc(100vh - 65px);
+      }
+    }
+    #nav_overlay.mega_mobile_holder {
+      position: fixed;
+      background-color: white;
+      z-index: 6;
+      top: 94px;
+      border-top: 1px solid #e9e9e9;
+      width: 100%;
+      max-width: 500px;
+      height: calc(100vh - 94px);
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      left: 0;
+      transform: translateX(-100%);
+      transition: transform 0.4s ease-in-out;
+    }
+    #nav_overlay.over-visible {
+      overflow: visible;
+    }
+    #nav_overlay.mega_mobile_holder.m_menu_opened {
+      transform: none;
+      /* border: 1px solid red; */
+    }
+
+    .m_menu_header {
+      display: flex;
+      margin: 17px 15px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .m_menu_backward img {
+      transform: rotate(180deg);
+    }
+
+    .m_menu_backward {
+      flex: 0 0 auto;
+      width: fit-content;
+    }
+
+    .m_menu_subtitle {
+      text-align: left;
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: flex-start;
+      position: relative;
+      top: 1px;
+      font: normal normal 600 14px / 18px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-transform: uppercase;
+      padding-left: 9px;
+    }
+
+    .m_menu_subclose {
+      flex: 0 0 auto;
+      margin-left: auto;
+      display: flex;
+      justify-content: flex-end;
+      cursor: pointer;
+    }
+
+    .m_menu_content~a {
+      background-color: #ebebeb;
+      margin: 2px;
+      display: flex;
+      text-align: center;
+      font: normal normal bold 19px / 23px Nimbus Sans D OT;
+      letter-spacing: 0;
+      color: #1F1F1F;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .m_menu_link {
+      display: flex;
+      align-items: center;
+      margin: auto 15px;
+      text-align: left;
+      font: normal normal 600 14px / 18px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      width: 100%;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .m_menu_link img {
+      width: 14px;
+      height: 9px;
+    }
+
+    .m_menu_list~img {
+      width: 133px;
+      height: 85px;
+    }
+
+    img.link_specific_img {
+      width: 120px;
+      height: 85px;
+    }
+
+    .m_menu_action a {
+      margin: 10px 20px;
+      font: normal normal normal 15px / 18px 'DF King Gothic LA10';
+      letter-spacing: 0;
+      color: #1F1F1F;
+      display: flex;
+      align-items: center;
+      grid-gap: 8px;
+    }
+
+    .m_menu_action img {
+      width: 24px;
+    }
+
+    .m_menu_action:first-of-type {
+      margin-top: 32px;
+    }
+
+    .m_menu_footer {
+      display: flex;
+      flex-direction: column;
+      margin: 16px 15px 0;
+    }
+
+    .m_menu_shopall {
+      width: 100%;
+      background-color: white;
+      padding: 14px 0 13px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      border: 1px solid black;
+      text-align: center;
+      letter-spacing: 0;
+      font: normal normal normal 13px / 16px Neue Haas Grotesk Text Pro;
+      color: black;
+      line-height: 16px;
+      min-height: 45px;
+    }
+    .m_menu_shopall a {
+      text-align: center;
+      letter-spacing: 0;
+      font: normal normal normal 13px / 16px Neue Haas Grotesk Text Pro;
+      color: black;
+      line-height: 16px;
+    }
+    .m_menu_badges {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 15px 7px;
+      text-align: center;
+      font: normal normal normal 11px / 18px 'DF King Gothic LA10';
+      letter-spacing: 0;
+      color: #1F1F1F;
+      text-transform: capitalize;
+    }
+
+    img.m_menu_badge_img {
+      width: 33px;
+      height: 28px;
+    }
+
+    .m_menu_badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      grid-gap: 8px;
+    }
+    .m_menu_subclose img {
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+    }
+    .m_menu_sublink {
+      position: fixed;
+      top: 0;
+      left: -108%;
+      z-index: 1;
+      background-color: white;
+      overflow: auto;
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;
+      transition: left 0.4s ease-in-out;
+    }
+    .m_menu_sublink.m_menu_opened {
+      left: 0;
+    }
+    a.m_menu_terminal {
+      display: flex;
+      align-items: center;
+      padding: 6px 0 7px;
+      position: relative;
+    }
+    .m_menu_color a.m_menu_terminal {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+    .m_menu_sale .m_menu_link {
+      color: {{ settings.sale_color }};
+    }
+
+    {% if settings.show_sale_txt_on_mobile %}
+    .m_menu_sale .m_menu_link:after {
+      content: '{{ settings.sale_text }}';
+      font: normal normal normal 10px / 12px Neue Haas Grotesk Text Pro;
+      padding: 4px 6px;
+      background-color: #F3F3F3;
+      margin-left: 6px;
+    }
+    {% endif %}
+      
+    .m_menu_best .m_menu_link {
+      color: #E54525;
+    }
+
+    .m_menu_trending {
+      background-image: url('{{ 'trending.jpg' | asset_url }}');
+      width: 82px;
+      height: 20px;
+      background-size: contain;
+      margin-left: 8px;
+    }
+
+    .m_menu_best .m_menu_link:before {
+      content: '';
+      background-image: url('{{ 'rocket.svg' | asset_url }}');
+      background-position: left;
+      width: 12px;
+      height: 12px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin-right: 5px;
+    }
+
+    .m_linklist_wrapper {
+      display: flex;
+      width: 100%;
+    }
+
+    .m_linklist_wrapper .m_content_title {
+      width: 50%;
+      background: #F3F3F4;
+      font: normal normal normal 12px / 46px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-align: center;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .m_linklist_wrapper .m_content_title.active {
+      background: white;
+    }
+    .m_links_wrapper .m_menu_content {
+      display: none;
+      margin-top: 17px;
+    }
+    .m_menu_sublink .m_menu_content {
+      display: block;
+      padding: 10px 15px 42px;
+    }
+    .m_menu_list {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-transform: uppercase;
+      white-space: nowrap;
+      width: fit-content;
+    }
+    .m_menu_list.m_link_list {
+      width: 100%;
+    }
+    .m_menu_list a.m_menu_address {
+      display: flex;
+      text-align: center;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      font: normal normal 600 14px / 18px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-transform: uppercase;
+    }
+    .m_sub_best_wrapper > div {
+      width: max(205px, 50%);
+      margin-right: 8px;
+    }
+
+    .m_sub_best_wrapper {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+    /* width */
+    .m_sub_best_wrapper::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    /* Track */
+    .m_sub_best_wrapper::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+      background-color: #f1f0f0;
+    }
+
+    /* Handle */
+    .m_sub_best_wrapper::-webkit-scrollbar-thumb {
+      background: black;
+      border-radius: 10px;
+    }
+
+    .m_menu_sublink .m_sub_heading {
+      font: normal normal normal 14px / 18px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-transform: uppercase;
+      padding: 15px 0;
+    }
+    .m_menu_sublink .m_menu_link {
+      display: flex;
+      text-transform: none;
+      text-align: left;
+      font: normal normal normal 14px / 17px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      width: fit-content;
+      margin: 0;
+      padding-left: 15px;
+    }
+    .m_menu_terminal .m_col_img {
+      width: 51px;
+      height: 51px;
+      border-radius: 50px;
+      background: transparent linear-gradient(146deg, #242424 0%, #818181 100%) 0 0 no-repeat padding-box;
+      padding: 3px;
+    }
+    .m_menu_terminal img {
+      border-radius: 50px;
+    }
+    .m_menu_sublink .m_sub_heading {
+      font: normal normal 600 14px / 18px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-transform: uppercase;
+      padding: 15px 0;
+    }
+    .m_sub_best_title {
+      font: normal normal normal 14px / 17px Neue Haas Grotesk Text Pro;
+      letter-spacing: 0;
+      color: #000000;
+      text-transform: uppercase;
+      margin: 37px 0 12px;
+    }
+
+    .stickied #nav_overlay {
+      top: 55px;
+      height: calc(100vh - 55px);
+    }
+  </style>
+
+  <div id="nav_overlay" class="mega_mobile_holder" style="cursor:auto">
+    <div class="m_main_content" data-index="first">
+      {% assign parentNum = 0 %}
+      <div class="m_linklist_wrapper">
+        {% for link in linklists[section.settings.mobile_menu].links %}
+          {% unless linklists[link.handle] == empty %}
+            {% assign parentNum = parentNum | plus: 1 %}
+            <div class="m_content_title{% if parentNum == 1 %} active {% endif %}" data-index="{{ link.title }}" data-url="{{ link.url }}">{{ link.title }}
+            </div>
+          {% endunless %}
+        {% endfor %}
+      </div>
+      <div class="m_links_wrapper">
+        {% for link in linklists[section.settings.mobile_menu].links %}
+          {% unless linklists[link.handle] == empty %}
+            <style>
+              {%- if forloop.index == 1 -%}
+                .m_main_content[data-index="first"] .m_menu_content[data-index="{{link.title}}"] {
+                  display: flex;
+                  flex-direction: column;
+                }
+              {%- endif -%}
+              .m_main_content[data-index="{{link.title}}"] .m_menu_content[data-index="{{link.title}}"] {
+                display: flex;
+                flex-direction: column;
+              }
+            </style>
+            {% render 'm_sub_content' linklist: linklists[link.handle], data-index: link.title %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+    {% render 'm_menu_footer' blocks: section.blocks %}
+  </div>
+  
+  <script>
+  
+    $('.m_menu_list').click(function() {
+      setTimeout(() => {}, 100);
+      $(this).find('.m_menu_sublink').addClass('m_menu_opened');
+      if($(this).find('.m_menu_sublink').length) {
+        $('#nav_overlay').addClass('over-visible');
+      }
+    });
+  
+    $('.m_menu_subclose.m_menu_main').click(function() {
+      $('#nav_overlay').removeClass('m_menu_opened');
+      hide_overlay();
+    });
+  
+    $('.m_menu_subclose.m_menu_sub').click(function() {
+      var elem = $(this);
+  
+      setTimeout(() => {
+        obj = elem.closest('.m_menu_opened');
+        obj.removeClass('m_menu_opened');
+        $('#nav_overlay').removeClass('m_menu_opened');
+        hide_overlay();
+      }, 50);
+    });
+  
+    $('.m_menu_backward').click(function() {
+      var elem = $(this);
+  
+      setTimeout(() => {
+        obj = elem.closest('.m_menu_opened');
+        obj.removeClass('m_menu_opened');
+        
+        $('#nav_overlay').removeClass('over-visible');
+      }, 50);
+    });
+  
+    $('.m_content_title').click(function() {
+      let index = $(this).data('index');
+      let url = $(this).data('url');
+      console.log(index, url);
+      $('a.m_menu_shopall').attr('href', url).text(`shop all ${index}`);
+      $('.m_content_title').removeClass('active');
+      $(this).addClass('active');
+      $('.m_main_content').attr('data-index', index);
+    });
+  </script>
+
+<script>
+  var swiper_{{ section.id | remove: '-' | remove: '_' }} = new Swiper('#nav_overlay .swiper', {
+    slidesPerView: 1,
+    spaceBetween: 5,
+    pagination: {
+      el: '{{ _section }} .swiper-pagination',
+      type: 'bullets',
+      clickable: true,
+    },
+  });
+</script>
+
+{%- endcapture -%}
+
+{{- section_content | remove: '  ' | strip_newlines -}}
+
+{% schema %}
+    {
+        "name": "Mobile Menu",
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "mobile_menu",
+            "label": "Mobile Menu"
+          }
+        ],
+        "blocks": [
+          {
+            "name": "One Column Menu",
+            "type": "one-column",
+            "settings": [
+              {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "default": "One Column Menu"
+              }, {
+                "type": "link_list",
+                "id": "links",
+                "label": "Menu"
+              }
+            ]
+          }, 
+          {
+            "name": "Two Column Menu",
+            "type": "two-column",
+            "settings": [
+              {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "default": "Two Column Menu"
+              }, {
+                "type": "link_list",
+                "id": "links",
+                "label": "Menu"
+              }
+            ]
+          }, 
+          {
+            "name": "Podcast",
+            "type": "podcast",
+            "limit": 1,
+            "settings": [
+              {
+                "type": "textarea",
+                "id": "podcast_content",
+                "label": "Instruction"
+              },
+              {
+                "type": "text",
+                "id": "title",
+                "label": "Button Text",
+                "default": "Podcast"
+              },
+              {
+                "type": "url",
+                "id": "podcast_url",
+                "label": "Podcast Link"
+              }
+            ]
+          }
+        ]
+    }
+{% endschema %}

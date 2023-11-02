@@ -1,0 +1,29 @@
+<div class="quick_cta_holder" onmouseenter="validate_quick_cta_two_options_panel(this);"> 
+    <img src="{{ 'close.svg' | asset_url }}" alt="close" class="quick_cta_close" onclick="hide_mob_quick_cta()">
+    <div class="quick_top">
+        <div class="quick_img">
+            <img src="{{ product.images[0] | img_url: '150x' }}" alt="{{ product.title }}">
+        </div>
+        <div class="quick_desc">
+            <div class="quick_title">{{ product.title }}</div>
+            <div class="quick_prices">
+                {% if product.compare_at_price > product.price %}
+                    <span class="quick_com_price">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+                <span class="quick_now_price">{{ product.price | money }}</span>
+            </div>
+            <a href="{{ product.url }}" class="quick_view">VIEW MORE</a>
+        </div>
+    </div>
+    <div class="quick_divider"></div>
+    <div class="quick_bottom">
+        {% render 'quick_options_selector', product: product %}
+    </div>
+
+    {% if product.available %}
+        <div class="quick_cta_btn" var_id="{{ product.selected_or_first_available_variant.id }}" onclick="hide_mob_quick_cta(); add_variant_to_cart(this.getAttribute('var_id'), 1);">ADD TO BAG</div>
+    {% else %}
+        <div class="quick_cta_btn diabled_cta" var_id="{{ product.selected_or_first_available_variant.id }}">SOLD OUT</div>
+    {% endif %}
+
+</div>

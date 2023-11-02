@@ -1,0 +1,679 @@
+{% assign _ss = section.settings %}
+{% assign sc = section.id | split: '__' | last | slice: -4, 4 | prepend: '#footer_' %}
+
+{%- capture section_content -%}
+<style>
+  {{ sc }} {
+      background: #FFF6F7 0% 0% no-repeat padding-box;
+      position: relative;
+  }
+  
+  {{ sc }} .footer_lower {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 65px;
+  }
+
+  {{ sc }} .lower_holder {
+      display: flex;
+      max-width: 1520px;
+      width: calc(100% - 30px);
+      align-items: flex-end;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  {{ sc }} .lower_holder ._term {
+      max-width: 487px;
+  }
+
+  {{ sc }} .lower_holder ._term {
+      display: flex;
+  }
+
+  {{ sc }} .lower_holder ._term > a {
+      text-align: center;
+      text-decoration: none;
+      font: normal normal normal 13px/17px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+      margin-right: 13px;
+  }
+  {{ sc }} .lower_holder ._term > a:last-child {
+      margin-right: 0;
+  }
+
+  {{ sc }} .lower_holder .payments svg {
+      /* transform: scale(0.9); */
+      margin: 0 7px;
+      min-width: 34px;
+  }
+  {{ sc }} .lower_holder .payments svg:last-child {
+    margin-right: 0;
+  }
+
+  {{ sc }} .lower_holder .payments {
+      display: flex;
+  }
+
+  {{ sc }} .upper_holder {
+      display: flex;
+      max-width: 1520px;
+      width: calc(100% - 30px);
+      padding: 70px 0 42px;
+      flex-wrap: wrap;
+  }
+
+  {{ sc }} .footer_upper {
+      display: flex;
+      justify-content: center;
+  }
+
+  {{ sc }} .upper_holder .newsletter {
+      /*flex: 0 0 40%;*/
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+  }
+
+  {{ sc }} .upper_holder .socials_wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 33px;
+      width: 100%;
+  }
+
+  {{ sc }} .socials_wrapper ._logo {
+      display: flex;
+      margin-bottom: 9px;
+  }
+  {{ sc }} .upper_holder .link_lists {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-left: 100px;
+      flex: 1;
+  }
+
+  {{ sc }} a.contact_address {
+    text-align: left;
+    text-decoration: underline;
+    font: normal normal normal 14px/15px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #001C72;
+  }
+  {{ sc }} .link_lists .link_list {
+    min-width: 190px;
+  }
+
+  {{ sc }} .link_list .link_title {
+      text-align: left;
+      font: normal normal 900 19px/25px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #FFBAD8;
+      margin-bottom: 16px;
+  }
+
+  {{ sc }} .link_list .links {
+      display: flex;
+      flex-direction: column;
+      max-width: 145px;
+  }
+
+  {{ sc }} .link_list .links > a {
+      text-align: left;
+      font: normal normal normal 16px/21px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+      text-decoration: none;
+      margin-bottom: 12px;
+  }
+
+  {{ sc }} .newsletter .link_title {
+      text-align: left;
+      font: normal normal 900 24px/31px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+      max-width: 424px;
+      padding: 4px 0;
+      margin: 0;
+  }
+
+  {{ sc }} .newsletter .main-input {
+    position: relative;
+    display: flex;
+  }
+
+  {{ sc }} .newsletter .desc {
+      text-align: left;
+      font: normal normal normal 17px/22px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+      margin: 2px 0 10px;
+  }
+  {{ sc }} .newsletter .desc > p {
+    margin: 0;
+  }
+
+  {{ sc }} .newsletter .main-input button {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      font: normal normal 600 16px/19px Basis Grotesque Pro;
+      letter-spacing: 0.8px;
+      color: #FFFFFF;
+      background: #FB7495 0% 0% no-repeat padding-box;
+      height: 100%;
+      border-radius: 33px;
+      cursor: pointer;
+      padding: 0 16px;
+  }
+
+  {{ sc }} .newsletter .main-input button:hover {
+    background: #f83666 0% 0% no-repeat padding-box;
+  }
+
+  {{ sc }} button.needsclick:hover {
+    background: #f83666;
+  }
+  {{ sc }} .main-input input[type='email'] {
+      width: 100%;
+      background: #FFFFFF 0% 0% no-repeat padding-box;
+      border-radius: 8px;
+      border-color: unset;
+      height: 48px;
+      padding: 6px 20px;
+      border: none;
+      border: 2px solid #FB7495;
+      border-radius: 33px;
+  }
+
+  {{ sc }} .main-input input[type='email']::placeholder {
+      opacity: 1;
+      color: #A1AED4;
+      font: normal normal medium 16px/19px Basis Grotesque Pro;
+  }
+
+  {{ sc }} .main-input input[type='email']:focus-visible {
+      border: none;
+      outline: none;
+  }
+
+  {{ sc }} ._logo img {
+      width: 185px;
+      height: 35px;
+  }
+
+  {{ sc }} ._copyright {
+      text-align: left;
+      font: normal normal normal 13px/15px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+  }
+
+  {{ sc }} ._copyright a {
+      text-decoration: none;
+      text-align: left;
+      font: normal normal normal 13px/15px Basis Grotesque Pro;
+      letter-spacing: 0px;
+      color: #001C72;
+  }
+
+  {{ sc }} .social_icons {
+    margin-top: auto;
+    margin-bottom: 9px;
+  }
+  {{ sc }} .footer_social {
+      display: flex;
+  }
+
+  {{ sc }} .footer_social a {
+      margin-left: 12px;
+      width: 40px;
+      height: 40px;
+      transition: transform .2s ease-in-out;
+  }
+
+  {{ sc }} .footer_social a:hover {
+    transform: translateY(-5px)
+  }
+
+  {{ sc }} .footer_social a:first-child {
+    margin-left: 0;
+  }
+
+  {{ sc }} .footer_social img {
+    width: 40px;
+  }
+
+  {{ sc }} .lower_holder .social_icons {
+    display: none;
+  }
+
+  {{ sc }} .lower_holder .contact_address {
+    display: none;
+  }
+  #to-top {
+    display: none;
+  }
+  @media screen and (max-width: 1200px) {
+    {{ sc }} .upper_holder {
+        flex-direction: column;
+        align-items: center;
+        max-width: 1100px;
+        padding: 40px 0 12px;
+    }
+
+    {{ sc }} .upper_holder .link_lists {
+        margin-left: unset;
+        margin-top: 22px;
+        width: 100%;
+    }
+
+    {{ sc }} .link_lists .link_list {
+      margin-left: 0;
+    }
+    {{ sc }} .lower_holder {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    {{ sc }} .social_icons {
+      display: none;
+    }
+    {{ sc }} .lower_holder .social_icons {
+      display: flex;
+    }
+
+    {{ sc }} .contact_address {
+      display: none;
+    }
+
+    {{ sc }} .lower_holder .contact_address {
+      display: inline;
+      font-size: 10px;
+      line-height: 13px;
+      text-align: center;
+    }
+
+    {{ sc }} .lower_holder ._term {
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    {{ sc }} .lower_holder .payments {
+        margin-top: 18px;
+    }
+  }
+
+  @media screen and (max-width: 650px) {
+    {{ sc }} .newsletter .link_title {
+      font: normal normal 900 21px/27px Basis Grotesque Pro;
+    }
+    {{ sc }} .footer_lower {
+      padding-bottom: 28px;
+    }
+    {{ sc }} .link_lists .link_list {
+        min-width: 170px;
+        width: 50%;
+        margin-top: 17px;
+    }
+
+    {{ sc }} .upper_holder .link_lists {
+        flex-wrap: wrap;
+    }
+
+    {{ sc }} .link_list .links {
+        max-width: unset;
+    }
+
+    {{ sc }} .upper_holder .socials_wrapper {
+        margin-top: 17px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    {{ sc }} .lower_holder .payments {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    {{ sc }} .lower_holder .payments svg {
+        margin-top: 10px;
+        width: 34px;
+    }
+
+    {{ sc }} .spacegood {
+        order: 1;
+        margin-top: 11px;
+    }
+
+    {{ sc }} ._copyright {
+        text-align: center;
+        margin: 9px 0 6px;
+    }
+
+    {{ sc }} .spacegood ._logo {
+        display: flex;
+    }
+    
+    {{ sc }} .footer_social img {
+        width: 40px;
+    }
+    
+    {{ sc }} .footer_social a:first-child {
+        margin-left: 0;
+    }
+    
+    {{ sc }} .main-input input[type='email'] {
+        padding: 2px 0 2px 20px;
+    }
+    
+    {{ sc }} .newsletter .main-input button {
+        right: 0px;
+        height: calc(100% - 0px);
+        padding: 0 16px;
+    }
+    
+    {{ sc }} .link_list .link_title {
+        font: normal normal 900 17px/22px Basis Grotesque Pro;
+        margin-bottom: 12px;
+    }
+    
+    {{ sc }} .link_list .links > a {
+        font: normal normal normal 14px/18px Basis Grotesque Pro;
+        margin-bottom: 12px;
+    }
+    
+    {{ sc }} .upper_holder .link_lists {
+        margin-top: 25px;
+    }
+    {{ sc }} #to-top {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translate(-50%, -50%) rotate(-90deg);
+      border-radius: 50px;
+      display: flex;
+      background: #FFFFFF 0% 0% no-repeat padding-box;
+      border: 4px solid #FFBAD8;
+      padding: 5px;
+      cursor: pointer;
+    }
+  }
+</style>
+
+{% capture social_icons %}
+  <div class="social_icons">
+    <div class="footer_social">
+      {% if settings.social_facebook_link != blank %}
+        <a href="{{settings.social_facebook_link}}" target="_blank" class="footer_social-item">
+            <img src="{{'FacebookLogo.svg' | asset_url}}" alt="icon">
+        </a>
+      {% endif %}
+      {% if settings.social_twitter_link != blank %}
+        <a href="{{settings.social_twitter_link }}" target="_blank" class="footer_social-item">
+            <img src="{{'TwitterLogo.svg' | asset_url}}" alt="icon">
+        </a>
+      {% endif %}
+      {% if settings.social_youtube_link != blank %}
+        <a href="{{settings.social_youtube_link}}" target="_blank" class="footer_social-item">
+            <img src="{{'YoutubeLogo.svg' | asset_url}}" alt="icon">
+        </a>
+      {% endif %}
+      {% if settings.social_instagram_link != blank %}
+        <a href="{{settings.social_instagram_link }}" target="_blank" class="footer_social-item">
+            <img src="{{'InstagramLogo.svg' | asset_url}}" alt="icon">
+        </a>
+      {% endif %}
+      {% if settings.social_tiktok_link != blank %}
+        <a href="{{settings.social_tiktok_link}}" target="_blank" class="footer_social-item">
+            <img src="{{'TiktokLogo.svg' | asset_url}}" alt="icon">
+        </a>
+      {% endif %}
+    </div> 
+  </div>
+{% endcapture %}
+
+{% capture contact_address %}
+  <a class="contact_address" href="mailto:hello@example.com" title="hello@example.com" style="color: #001C72;">hello@example.com</a>
+{% endcapture %}
+
+<footer id="footer_{{ section.id | split: '__' | last | slice: -4, 4 }}">
+    <img src="{{ 'rightarrow.png' | asset_url }}" alt="arrow-pawsome" id="to-top" width="45px">
+    <div class="footer_upper">
+      <div class="upper_holder">
+        <div class="newsletter">
+          {% for block in section.blocks %}
+            {% if block.type == 'newsletter' %}
+              <div class="link_title">
+                {{ block.settings.title }}
+              </div>
+              <div class="desc">
+                {{ block.settings.desc }}
+              </div>
+              {% form 'contact' %}
+                <div class="main-input">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <label for="FooterNewsletterEmail" class="label-hidden_">
+                    {{_ss.instruct}}
+                  </label>
+                  <input type="email" class="medium-down--text-center" name="contact[email]" id="FooterNewsletterEmail"
+                    value="{% if customer %}{{ customer.email }}{% endif %}"
+                    placeholder="{{ block.settings.plh_txt }}" autocorrect="off" autocapitalize="off"
+                    required>
+                    <button type="submit">{{ block.settings.sub_txt }}</button>
+                </div>
+              {% endform %}
+              {% comment %} {{ section.settings.newsletter }} {% endcomment %}
+            {% endif %}
+          {% endfor %}
+          {{ social_icons }}
+          {{ contact_address }}
+        </div>
+        <div class="link_lists">
+          {% for block in section.blocks %}
+            {% if block.type == 'linklist' %}
+              <div class="link_list">
+                <div class="link_title">
+                  {{ block.settings.title }}
+                </div>
+                <div class="links">
+                  {% for link in block.settings.links.links %}
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="footer_lower">
+      <div class="lower_holder">
+        {{ social_icons }}
+        <div class="_copyright">
+          &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: routes.root_url }}
+        </div>
+        {{ contact_address }}
+        <div class="_term">
+          {% for block in section.blocks %}
+            {% if block.type == 'term' %}
+              {% for link in block.settings.links.links %}
+                <a href="{{ link.url }}" class="link">
+                  {{ link.title }}
+                </a>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="payments">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</footer>
+
+<script>
+  document.querySelector('#to-top').addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  })
+</script>
+{%- endcapture -%}
+    {{- section_content | remove: '  ' | strip_newlines -}}
+
+{% schema %}
+    {
+        "name": "footer",
+        "class": "lazy_section_scroll",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo Image"
+          },
+          {
+            "type": "text",
+            "id": "warn",
+            "label": "Warning",
+            "default": "* these statements have not been evaluated by the food and drug administration. this product is not intended to diagnose, treat, cure or prevent any disease."
+          },
+          {
+            "type": "html",
+            "id": "newsletter",
+            "label": "Klaviyo newsletter",
+            "default": "<div class=\"klaviyo-form-R289PS\"></div>"
+          }
+        ],
+        "blocks": [
+          {
+            "name": "Newsletter",
+            "type": "newsletter",
+            "limit": 1,
+            "settings": [
+              {
+                "type": "text",
+                "id": "title",
+                "default": "Join the pack",
+                "label": "Newsletter Title"
+              },
+              {
+                "type": "text",
+                "id": "plh_txt",
+                "default": "Email Address",
+                "label": "Email Input Placeholder"
+              },
+              {
+                "type": "text",
+                "id": "sub_txt",
+                "default": "GET 15% OFF",
+                "label": "Submit Button Text"
+              },
+              {
+                "type": "richtext",
+                "id": "desc",
+                "default": "<p>Sign up for the latest updates and <span>GET 15% OFF</span> your next order.</p>",
+                "label": "Newsletter Description"
+              }
+            ]
+          },
+          {
+            "name": "LinkList",
+            "type": "linklist",
+            "limit": 4,
+            "settings": [
+              {
+                "type": "text",
+                "id": "title",
+                "default": "SHOP",
+                "label": "LinkList Title"
+              },
+              {
+                "type": "link_list",
+                "id": "links",
+                "label": "LinkList",
+                "default": "footer"
+              }
+            ]
+          },
+          {
+            "name": "Terms",
+            "type": "term",
+            "settings": [
+              {
+                "type": "link_list",
+                "id": "links",
+                "label": "LinkList"
+              }
+            ]
+          }
+        ],
+        "presets": [{
+            "name": "footer (Default)",
+            "blocks": [
+              {
+                "type": "newsletter",
+                "settings": {
+                  "title": "Join the pack",
+                  "plh_txt": "Email Address",
+                  "sub_txt": "GET 15% OFF",
+                  "desc": "<p>Sign up for the latest updates and <strong>GET 15% OFF <\/strong>your next order.<\/p>"
+                }
+              },
+              {
+                "type": "term",
+                "settings": {
+                  "links": ""
+                }
+              },
+              {
+                "type": "linklist",
+                "settings": {
+                  "title": "Shop",
+                  "links": "shop-dev"
+                }
+              },
+              {
+                "type": "linklist",
+                "settings": {
+                  "title": "Learn More",
+                  "links": "tw-learn-more"
+                }
+              },
+              {
+                "type": "linklist",
+                "settings": {
+                  "title": "About Us",
+                  "links": "tw-about-us"
+                }
+              },
+              {
+                "type": "linklist",
+                "settings": {
+                  "title": "Support",
+                  "links": "tw-support"
+                }
+              },
+              {
+                "type": "term",
+                "settings": {
+                  "links": "tw-term"
+                }
+              }
+
+            ],
+            "settings": {
+              "warn": "",
+              "newsletter": ""
+            }
+        }]
+    }
+{% endschema %}

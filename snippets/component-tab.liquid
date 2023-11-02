@@ -1,0 +1,83 @@
+<style>
+  tab-desc .tab-name {
+    text-align: left;
+    letter-spacing: 0px;
+    font: normal normal 900 15px/19px Basis Grotesque Pro;
+    color: #001C72;
+    background: #FFF6F7 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    padding: 11.5px 18px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  tab-desc .tab-content {
+    display: none;
+  }
+  tab-desc .tab svg#plus {
+    display: inlin;
+  }
+  tab-desc .tab.tab.opened svg#plus {
+    display: none;
+  }
+  tab-desc .tab svg#minus {
+    display: none;
+  }
+  tab-desc .tab.tab.opened svg#minus {
+    display: inline;
+  }
+  tab-desc .tab.opened .tab-content {
+    display: block;
+    width: 100%;
+  }
+  tab-desc .tab-content {
+    padding: 15px;
+  }
+  .tab .tab-name img {
+    transition: transform 0.4s ease-in-out;
+  }
+  .tab.opened .tab-name img {
+    transform: rotate(90deg);
+    
+  }
+  .product-single__description {
+    margin-top: 15px;
+  }
+
+  tab-desc .rte h2 {
+    margin: 16px;
+  }
+  @media screen and (max-width: 560px) {
+    
+    tab-desc .tab-content {
+      padding: 0;
+    }
+    .product-single__shipping img {
+      margin: 0!important;
+    }
+  }
+</style>
+
+<script>
+  class TabDesc extends HTMLElement {
+    constructor() {
+      super();
+      this.tabs = this.querySelectorAll('.tab');
+      this.tabs.forEach( tab => {
+        tab.querySelector('.tab-name').addEventListener('click', () => {
+          let t_gap = tab.getBoundingClientRect().top - window.scrollY;
+          document.querySelectorAll('tab-desc .tab').forEach((sibling) => {
+            if (sibling != tab ) sibling.classList.toggle('opened', false);
+            else tab.classList.toggle('opened');
+          });
+          window.scrollTo(0, tab.getBoundingClientRect().top - t_gap);
+        });
+      });
+    }
+  }
+
+  customElements.define('tab-desc', TabDesc);
+</script>

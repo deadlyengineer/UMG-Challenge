@@ -1,0 +1,43 @@
+{
+  "order": [
+    "main",
+    "shopby_collections"
+  ],
+  "sections": {
+    "main": {
+      "type": "hero",
+      "settings": {
+        "hero_show": "image",
+        "heading": "Unleash your style and pamper your furry friend",
+        "subtitle": "Your One-Stop Shop for Dog Accessories and Hooman's Apparel",
+        "cta_1": "SHOP FOR DOGS",
+        "cta_target_1": "",
+        "cta_2": "SHOP FOR DOGS",
+        "cta_target_2": ""
+      }
+    },
+    "shopby_collections": {
+      "type": "shopby_collections",
+      "blocks": {
+        "8baba8f4-27b7-4005-a7f8-7365f59fb1e4": {
+          "type": "collection",
+          "settings": {
+            "collection": "hydrogen",
+            "heading": "BESTSELLER",
+            "highlight": false,
+            "btn_txt": "SHOP ALL BESTSELLERS",
+            "btn_url": "shopify:\/\/collections\/hydrogen",
+            "under_btn_txt": "FREE UK SHIPPING OVER £40"
+          }
+        }
+      },
+      "block_order": [
+        "8baba8f4-27b7-4005-a7f8-7365f59fb1e4"
+      ],
+      "settings": {
+        "heading": "",
+        "bkcolor": "#FFFFFF"
+      }
+    }
+  }
+}

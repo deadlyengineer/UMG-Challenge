@@ -1,0 +1,513 @@
+{% assign _ss = section.settings %}
+{% assign _section = section.id | split: '__' | last | slice: -4, 4 | prepend: '#header_' %}
+
+{%- capture section_content -%}
+
+<style>
+    div#shopify-section-header {
+        border-bottom: 1px solid #E9E9E9;
+        position: sticky;
+        top: -1px;
+        background: white;
+        z-index: 6;
+    }
+
+    {{ _section }} {
+        position: relative;
+    }
+
+    {{ _section }} .section_holder {
+        position: relative;
+        max-width: 1530px;
+        margin: auto;
+        padding: 0px 15px;
+    }
+
+    {{ _section }} .header_content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 65px;
+        user-select: none;
+    }
+
+    {{ _section }} .left_part,
+    {{ _section }} .right_part {
+        width: calc(50% - 50px);
+    }
+
+    {{ _section }} .left_part img,
+    {{ _section }} .right_part img {
+        height: 22px;
+        display: flex;
+    }
+
+    {{ _section }} .left_part > * {
+        display: flex;
+    }
+
+    {{ _section }} a.s_lnk {
+        font: normal normal normal 13px/16px Neue Haas Grotesk Text Pro;
+        letter-spacing: 0px;
+        color: #000000;
+        text-transform: uppercase;
+        margin-right: 24px;
+    }
+
+    {{ _section }} a.s_lnk:last-of-type {
+        margin-right: 0;
+    }
+
+    {{ _section }} a.s_lnk.sale_link {
+        color: {{ settings.sale_color }};
+    }
+
+    {{ _section }} a.logo {
+        width: 91px;
+        display: flex;
+    }
+
+    {{ _section }} .right_part {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    {{ _section }} .right_part > * {
+        margin-left: 32px;
+        cursor: pointer;
+    }
+
+    {% if template == 'cart' %}
+      {{ _section }} .cart_icon {
+        pointer-events: none;
+      }
+    {% endif %}
+
+    {{ _section }} a.podcast {
+        margin-left: 0 !important;
+        background: black;
+        display: flex;
+        width: 110px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100px;
+        font: normal normal normal 13px/16px Neue Haas Grotesk Text Pro;
+        letter-spacing: 0px;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        user-select: none;
+    }
+
+    {{ _section }} .cart_icon.not_empty {
+        position: relative;
+    }
+
+    {{ _section }} .cart_icon.not_empty::before {
+        position: absolute;
+        content: '';
+        right: -5px;
+        bottom: 1px;
+        width: 12px;
+        height: 12px;
+        background-color: #39BC58;
+        border: 1px solid #FFFFFF;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+
+    {{ _section }} .cur_selector {
+        font: normal normal normal 13px/16px Neue Haas Grotesk Text Pro;
+        letter-spacing: 0px;
+        color: #000000;
+        text-transform: uppercase;
+        padding-right: 20px;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-image: url({{ 'dropdown.svg' | asset_url }});
+    }
+
+    {{ _section }} div#SearchContainer {
+        position: absolute;
+        display: none;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        margin-left: 0;
+        width: 100vw;
+        height: 124px;
+        background: white;
+        padding: 20px 123px;
+    }
+
+    {{ _section }} div#SearchContainer input {
+      height: 100%;
+      font: normal normal normal 16px/1 Neue Haas Grotesk Text Pro;
+      border-radius: 0;
+      outline: none !important;
+      width: 100%;
+      background: #F9F9F9;
+      border: none !important;
+      padding: 32px 67px;
+      background-repeat: no-repeat;
+      background-position: 31px;
+      background-size: 25px;
+      background-image: url({{ 'search.svg' | asset_url }});
+    }
+
+    {{ _section }} img.search_close {
+        position: absolute;
+        right: 152px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 900px) {
+        {{ _section }} .section_holder {
+            padding: 0px 15px;
+        }
+
+        {{ _section }} .for_desktop_only {
+            display: none !important;
+        }
+
+        {{ _section }} .header_content {
+            height: 55px;
+        }
+
+        {{ _section }} .left_part img {
+            margin-right: 21px;
+            cursor: pointer;
+        }
+        
+        {{ _section }} .right_part > * {
+            margin-left: 21px;
+        }
+
+        {{ _section }} a.logo {
+            width: 79px;
+        }
+
+        {{ _section }} a.logo img {
+            height: 38px;
+        }
+
+        {{ _section }} div#SearchContainer {
+            right: 0;
+            transform: translateY(100%);
+            display: none !important;
+            width: 100%;
+
+        }
+
+        {{ _section }} div#SearchContainer input {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+
+
+        /* pcard css overwrite */
+        {{ _section }} .s_p_img {
+          padding-bottom: 133.4%;
+        }
+
+        {{ _section }} .left_badge.best_seller {
+          background-color: white;
+          left: -36px;
+          top: 37px;
+          padding: 4px 7px 3px 18px;
+          background-position-x: 4px;
+          font: normal normal normal 10px/12px Neue Haas Grotesk Text Pro;
+          letter-spacing: 0px;
+          color: #000000;
+        }
+
+        {{ _section }} .left_badge {
+            left: -14px;
+            top: 14px;
+            padding: 4px 6px;
+            font: normal normal normal 10px/12px Neue Haas Grotesk Text Pro;
+            letter-spacing: 0px;
+            color: #000000;
+            background-color: white;
+        }
+
+        {{ _section }} .right_badge {
+            background-color: white;
+            line-height: 34px;
+            padding: 0 12px;
+            top: 4px;
+            right: 4px;
+        }
+        /* end of pcard css overwrite */
+
+        {{ _section }} .hamburger .close {
+          display: none;
+        }
+        {{ _section }} .hamburger.menu_open .open {
+          display: none;
+        }
+        {{ _section }} .hamburger.menu_open .close {
+          display: flex;
+          width: 23px;
+          height: 22px;
+        }
+
+    }
+
+
+    @media screen and (min-width: 901px) {
+        {{ _section }} .for_mobile_only {
+            display: none !important;
+        }
+
+
+    }
+    
+
+</style>
+
+{%- assign main_menu_handle = section.settings.main-menu -%}
+{%- assign main_menu = linklists[main_menu_handle] -%}
+
+<div id="header_{{ section.id | split: '__' | last | slice: -4, 4 }}">
+    <div class="section_holder">
+        <div class="header_content">
+            <div class="left_part">
+                <div class="for_desktop_only">
+                    {% for link in main_menu.links %}
+                        <a href="{{ link.url }}" index="{{ forloop.index }}" class="s_lnk{% if link.title == 'Sale' %} sale_link{% endif %}">{{ link.title }}</a>
+                    {% endfor %}
+                </div>
+                <div class="for_mobile_only">
+                    <div class="hamburger">
+                      <img class="open" src="{{ 'mob_menu.svg' | asset_url }}" alt="mobile menu open" onclick="show_mobile_menu()">
+                      <img class="close" src="{{ 'close.svg' | asset_url }}" alt="mobile menu close" onclick="hide_mobile_menu()">
+                    </div>
+                    <img src="{{ 'search.svg' | asset_url }}" alt="search" onclick="show_search_popup()">
+                </div>
+
+            </div>
+
+            <a href="{{ routes.root_url }}" class="logo">
+                <img src="https://www.universalmusic.com/wp-content/uploads/2022/05/UMG_LineworkLogo_KOwhite.png" alt="logo" style="filter:invert(1);width:100%;">
+            </a>
+
+            <div class="right_part">
+
+                <img src="{{ 'search.svg' | asset_url }}" alt="search" class="search_btn for_desktop_only">
+                
+                {% if shop.customer_accounts_enabled %}
+                <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="account">
+                    <img src="{{ 'account.svg' | asset_url }}" alt="account">
+                </a>
+                {% endif %}
+
+                <a href="/cart" class="cart_icon {% if cart.items.size > 0 %}not_empty{% endif %}">
+                    <img src="{{ 'cart.svg' | asset_url }}" alt="" class="cart">
+                </a>
+
+                <div id="SearchContainer">
+                  <input type="text" id="search-input" name="q" class="search" value="" placeholder="Search">
+                  <img src="{{ 'close.svg' | asset_url }}" alt="close" class="search_close">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="megamenu_holder">
+        {% include 'megamenu_html' %}
+    </div>
+</div>
+
+<script>
+    $("a.s_lnk").mouseenter(function () {
+        var index = $(this).attr('index');
+        console.log('IN: hide other panels, show - ', index);
+        show_megamenu_block(index);
+    });
+
+    $('.megamenu_holder').mouseleave(function () {
+        hide_megamenu_block();
+    });
+
+    function show_megamenu_block(index) {
+        $('[attach_item]').hide();
+        if ($('[attach_item="' + index + '"]').length > 0) {
+            $('[attach_item="' + index + '"]').css('display', 'flex');
+            $('.megamenu_holder').show();
+        } else {
+            $('.megamenu_holder').hide();
+        }
+    }
+
+    function hide_megamenu_block() {
+        $('.megamenu_holder').hide();
+    }
+</script>
+
+{%- endcapture -%}
+
+{{- section_content | remove: '  ' | strip_newlines -}}
+{%- comment -%}
+{{- section_content -}}
+{%- endcomment -%}
+
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "main-menu",
+      "label": "Main Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_type_1",
+      "name": "Links and images",
+      "settings": [
+        {
+          "type": "select",
+          "id": "attached_item",
+          "label": "Menu item to attach",
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Navigation"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "link_list",
+          "id": "image_links_navigation",
+          "label": "Navigation List 1"
+        },
+        {
+          "type": "link_list",
+          "id": "image_links_navigation_2",
+          "label": "Navigation List 2"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "text",
+          "id": "image_links_item_1",
+          "label": "Item 1"
+        },
+        {
+          "type": "url",
+          "id": "image_links_link_1",
+          "label": "Link 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_links_image_1",
+          "label": "Image 1"
+        },
+        {
+          "type": "text",
+          "id": "image_links_item_2",
+          "label": "Item 2"
+        },
+        {
+          "type": "url",
+          "id": "image_links_link_2",
+          "label": "Link 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_links_image_2",
+          "label": "Image 2"
+        },
+        {
+          "type": "text",
+          "id": "image_links_item_3",
+          "label": "Item 3"
+        },
+        {
+          "type": "url",
+          "id": "image_links_link_3",
+          "label": "Link 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_links_image_3",
+          "label": "Image 3"
+        },
+        {
+          "type": "text",
+          "id": "image_links_item_4",
+          "label": "Item 4"
+        },
+        {
+          "type": "url",
+          "id": "image_links_link_4",
+          "label": "Link 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_links_image_4",
+          "label": "Image 4"
+        },
+        {
+          "type": "text",
+          "id": "image_links_item_5",
+          "label": "Item 5"
+        },
+        {
+          "type": "url",
+          "id": "image_links_link_5",
+          "label": "Link 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_links_image_5",
+          "label": "Image 5"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

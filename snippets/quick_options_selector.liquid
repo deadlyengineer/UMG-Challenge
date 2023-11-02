@@ -1,0 +1,28 @@
+<div class="quick_var_selector quick_by_one_option" {% if product.options_with_values.size == 2 %}style="display: none;"{% endif %}>
+  {% for variant in product.variants %}
+      <input type="radio" name="p_{{ product.id }}_{{ product.id }}" id="v_{{ variant.id }}" {% if variant == product.selected_or_first_available_variant and variant.available %}checked{% endif %} {% if variant.available == false %}disabled{% endif %}> 
+      <label onclick="quick_one_option_click(this);" class="quick_one_option_label {% if variant.available == false %}quick_outta_stock"{% endif %}" for="v_{{ variant.id }}" >{{ variant.title }}</label>
+  {% endfor %}
+</div>
+
+{% if product.options_with_values.size == 2 %}
+  <div class="quick_var_selector quick_with_two_options">
+      <div>
+          {% for product_option in product.options_with_values %}
+              <div class="quick_s_option_holder">
+                  <div class="quick_option_name">
+                      {{ product_option.name }}
+                  </div>
+
+                  <div class="quick_options_holder">
+                      {% for value in product_option.values %}
+                          <input type="radio" name="p_{{ product.id }}_{{ product_option.name }}" id="p_{{ product.id }}_{{ value | handleize }}" {% if product_option.selected_value == value %}checked{% endif %}>
+                          <label for="p_{{ product.id }}_{{ value | handleize }}" class="quick_two_options_label" onclick="quick_two_options_label_click(this);">{{ value }}</label>
+                      {% endfor %}
+                  </div>
+              </div>
+
+          {% endfor %}
+      </div>
+  </div>
+{% endif %}

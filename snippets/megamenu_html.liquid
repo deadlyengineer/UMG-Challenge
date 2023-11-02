@@ -1,0 +1,98 @@
+<style>
+    .megamenu_holder {
+        background: black;
+        padding: 30px 0 15px;
+        position: absolute;
+        width: 100%;
+        top: 65px;
+        display: none;
+        z-index: 3;
+    }
+
+    .s_mega_block {
+        display: flex;
+        max-width: 1530px;
+        margin: auto;
+        justify-content: space-between;
+        padding: 0 15px;
+    }
+
+    .mega_item {
+        display: flex;
+        flex-direction: column;
+        width: 20%;
+        margin-right: 5px;
+    }
+
+    a.mega_item_lnk {
+        font: normal normal normal 16px/1.6 Neue Haas Grotesk Text Pro;
+        letter-spacing: 0px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .mega__img img {
+        width: 100%;
+    }
+
+    .mega_img_title {
+        margin: 0px 0 0 10px;
+    }
+
+    a.mega_item_lnk:hover {
+        text-decoration: underline;
+    }
+
+
+
+
+
+
+
+
+
+</style>
+
+{% for block in section.blocks %}
+    <div class="s_mega_block" attach_item="{{ block.settings.attached_item }}" >
+        
+        {% unless block.settings.image_links_navigation == blank %}
+            <div class="mega_item">
+                {% assign list = linklists[block.settings.image_links_navigation] %}
+                {% for link in list.links %}
+                    <a href="{{ link.url }}" class="mega_item_lnk">{{ link.title }}</a>
+                {% endfor %}
+            </div>
+        {% endunless %}
+        
+        {% unless block.settings.image_links_navigation_2 == blank %}
+            <div class="mega_item">
+                {% assign list = linklists[block.settings.image_links_navigation_2] %}
+                {% for link in list.links %}
+                    <a href="{{ link.url }}" class="mega_item_lnk">{{ link.title }}</a>
+                {% endfor %}
+            </div>
+        {% endunless %}
+
+        {% for i in (1..5) %}
+            {% assign url = 'image_links_link_' | append: i %}
+            {% assign image = 'image_links_image_' | append: i %}
+            {% assign heading = 'image_links_item_' | append: i %}
+
+            {% unless block.settings[url] == blank and block.settings[image] == blank %}
+                <div class="mega_item">
+                    <a class="mega_item_lnk" href="{{ block.settings[url] }}">
+                        <div class="mega__img">
+                            <img src="{{ block.settings[image] | img_url: '500x' }}" alt="{{ block.settings[heading] }}">
+                        </div>
+                        {% unless block.settings[heading] == blank %}
+                            <div class="mega_img_title">{{ block.settings[heading] }}</div>
+                        {% endunless %}
+                    </a>
+                </div>
+            {% endunless %}
+        {% endfor %}
+
+    </div>
+{% endfor %}
+

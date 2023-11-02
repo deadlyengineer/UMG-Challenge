@@ -1,0 +1,46 @@
+<a class="card_img_slider" href="{{ product.url }}">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            {% for image in product.images %}
+                <div class="swiper-slide s_p_img">
+                    <img src="{{ image | img_url: '700x' }}" alt="{{ image.alt }}" class="p_img">
+                </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    
+    {% assign is_bestseller = false %}
+    {% for _col in product.collections %}
+        {% if _col.handle == 'best-seller-2' %}
+            {% assign is_bestseller = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if is_bestseller %}
+        <div class="left_badge best_seller">BESTSELLER</div>
+    {% endif %}
+
+    {% if product.tags contains 'newin_' %}
+        <div class="left_badge">NEW IN</div>
+    {% endif %}
+
+    {% if product.compare_at_price > product.price %}
+        <div class="right_badge">{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF</div>
+    {% endif %}
+</a>
+
+<div class="matt_pcard_bt">
+    <a class="p_title" href="{{ product.url | within: collection }}">{{ product.title | split: ' - ' | first }}</a>
+    <div class="p_color">{{ product.title | split: ' - ' | last }}</div>
+    <div class="p_price_holder">
+        {% if product.compare_at_price > product.price %}
+            <span class="p_com_price">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+        <span class="p_now_price">{{ product.price | money }}</span>
+    </div>
+    {% render 'quick_cta', product: product %}
+
+    <img src="{{ 'plus.svg' | asset_url }}" alt="mob_quick_add_show" class="mob_quick_add_show" onclick="show_mob_quick_cta(this);">
+</div>
+

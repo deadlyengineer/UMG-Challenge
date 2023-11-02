@@ -1,0 +1,496 @@
+{% assign _ss = section.settings %}
+{% assign _section = section.id | split: '__' | last | slice: -4, 4 | prepend: '#pd_slider_' %}
+
+{%- capture section_content -%}
+<style>
+  {{ _section }} {
+    position: relative;
+    background-color: {{ _ss.bkcolor }}
+  }
+
+  {{ _section }} .pd_slider_holder {
+    max-width: 1600px;
+    margin: auto;
+    padding: 60px 40px;
+  }
+
+  {{ _section }} .pd_slider_main_part {
+    position: relative;
+  }
+
+  {{ _section }} .swiper-button {
+    position: absolute;
+    top: 50%;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #FFF;
+    box-shadow: 0px 0px 24px #FF75B13D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+  }
+
+  {{ _section }} .swiper-button.button-prev {
+    left: 0;
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  {{ _section }} .swiper-button.button-next {
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  {{ _section }} .pd_slider_title {
+    text-align: center;
+    font: normal normal 900 32px/41px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #001C72;
+    margin-bottom: 14px;
+  }
+
+  {{ _section }} .pd_slider_bar {
+    max-width: 530px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 2px solid #DFEFFC;
+    border-radius: 30px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 33px;
+    padding: 2px;
+  }
+
+  col-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: normal normal 900 15px/19px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #001C72;
+    padding: 16px 5px;
+    cursor: pointer;
+  }
+
+  col-title.selected {
+    background: #FFBAD8 0% 0% no-repeat padding-box;
+    border-radius: 26px;
+  }
+
+  col-title.highlighted {
+    color: #FF006F;
+  }
+
+  {{ _section }} .button_text_wrapper {
+    width: min(373px, calc(100% - 30px));
+    display: none;
+  }
+
+  {{ _section }} .pd_slider_button_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 33px 0;
+  }
+
+  {{ _section }} a.button_wrapper {
+    background: #FF75B1 0% 0% no-repeat padding-box;
+    border-radius: 60px;
+    text-decoration: none;
+    font: normal normal 900 16px/21px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    padding: 17px 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  {{ _section }} .button_text_wrapper.selected {
+    display: block;
+  }
+
+  {{ _section }} .under_button_text {
+    text-align: center;
+    margin-top: 18px;
+    font: normal normal bold 14px/16px Basis Grotesque Pro;
+    letter-spacing: 0px;
+    color: #FF75B1;
+  }
+  pd-slider-main {
+    display: none;
+  }
+  @media screen and (max-width: 900px) {
+    {{ _section }} .pd_slider_holder {
+      padding: 40px 20px;
+    }
+
+    {{ _section }} .desktop_only {
+      display: none;
+    }
+
+    {{ _section }} .pd_slider_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-column-gap: 7px;
+      grid-row-gap: 6px;
+    }
+
+    {{ _section }} .pd_slider_title {
+      font-size: 24px;
+      line-height: 30px;
+      margin-bottom: 7px;
+    }
+
+    {{ _section }} .pd_slider_bar {
+      padding: 3px;
+    }
+
+    col-title {
+      font-size: 13px;
+      line-height: 17px;
+      padding: 12px 5px;
+    }
+
+  }
+
+  @media screen and (max-width: 767px) {
+    {{ _section }} .pd_slider_grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    {{ _section }} .pd_slider_holder {
+      padding: 40px 12px 0;
+    }
+  }
+
+  @media screen and (min-width: 901px) {
+    {{ _section }} .mobile_only {
+      display: none;
+    }
+    
+    {{ _section }} a.button_wrapper {
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+    {{ _section }} .pd_slider_button_container {
+      padding: 15px 0;
+    }
+
+    {{ _section }} .under_button_text {
+      margin-top: 9px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+  
+
+</style>
+{% assign first_collection = section.blocks[0].settings.collection %}
+
+<div id="pd_slider_{{ section.id | split: '__' | last | slice: -4, 4 }}">
+  <div class="pd_slider_holder" data-active="{{ first_collection.handle }}">
+    <div class="pd_slider_title">{{ _ss.heading }}</div>
+    <div class="pd_slider_bar">
+      {% for c_block in section.blocks %}
+        <style>
+
+          .pd_slider_holder[data-active="{{ c_block.settings.collection.handle }}"] pd-slider-main[data-handle="{{ c_block.settings.collection.handle }}"] {
+            display: block;
+          }
+        </style>
+        <col-title class="{% if forloop.index == 1 %}selected{% endif %} {% if c_block.settings.highlight %}highlighted{% endif %}" col-handle="{{ c_block.settings.collection.handle }}" data-id="{{ forloop.index }}" data-parent="{{ _section }}">
+          {{ c_block.settings.heading }}
+        </col-title>
+      {% endfor %}
+    </div>
+    <div class="pd_slider_main_part">
+      <pd-slider-main class="pd_slider_main_part" data-handle="{{ first_collection.handle }}">
+        <style>
+          pd-slider-main.pd_slider_main_part {
+            position: relative;
+          }
+  
+          pd-slider-main .swiper-button {
+            position: absolute;
+            top: 50%;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #FFF;
+            box-shadow: 0px 0px 24px #FF75B13D;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+          }
+  
+          pd-slider-main .swiper-button.swiper-button-disabled {
+            opacity: 0.2;
+          }
+  
+          pd-slider-main .swiper-button.button-prev {
+            left: 0;
+            transform: translate(-50%, -50%) rotate(180deg);
+          }
+  
+          pd-slider-main .swiper-button.button-next {
+            right: 0;
+            transform: translate(50%, -50%);
+          }
+  
+          
+          @media screen and (max-width: 900px) {
+            pd-slider-main .desktop_only {
+              display: none;
+            }
+  
+            pd-slider-main .pd_slider_grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr;
+              grid-column-gap: 7px;
+              grid-row-gap: 6px;
+            }
+          }
+  
+          @media screen and (max-width: 767px) {
+            pd-slider-main .pd_slider_grid {
+              grid-template-columns: 1fr 1fr;
+            }
+          }
+          
+  
+          @media screen and (min-width: 901px) {
+            pd-slider-main .mobile_only {
+              display: none;
+            }
+          }
+        </style>
+        <div class="swiper desktop_only">
+          <div class="swiper-wrapper">
+            {% for i in (1..3) %}
+              {% for product in first_collection.products %}
+                <div class="swiper-slide">
+                  {% render 'product-card' product: product %}
+                </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+          
+        </div>
+        <div class="swiper-navigation desktop_only">
+          <div class="swiper-button button-prev">
+            {% render 'arrow.svg' %}
+          </div>
+          <div class="swiper-button button-next">
+            {% render 'arrow.svg' %}
+          </div>
+        </div>
+        <div class="pd_slider_grid mobile_only">
+          {% for product in first_collection.products limit: 6 %}
+            {% render 'product-card' product: product %}
+          {% endfor %}
+        </div>
+      </pd-slider-main>
+    </div>
+    <div class="pd_slider_button_container">
+      {% for c_block in section.blocks %}
+        <div class="button_text_wrapper {% if forloop.index == 1 %}selected{% endif %}" data-id="{{ forloop.index }}">
+          <a class="button_wrapper" href="{{ c_block.settings.btn_url }}">{{ c_block.settings.btn_txt }}</a>
+          <div class="under_button_text">{{ c_block.settings.under_btn_txt }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  if(!customElements.get('pd-slider-main')) {
+    customElements.define(
+      'pd-slider-main',
+      class PdSliderMain extends HTMLElement {
+        constructor() {
+          super();
+        }
+
+        connectedCallback() {
+          setTimeout(() => {
+            this.swiper = new Swiper(this.querySelector('.swiper'), {
+              slidesPerView: 2,
+              spaceBetween: 12,
+              breakpoints: {
+                900: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                1200: {
+                  slidesPerView: 4,
+                  spaceBetween: 13
+                },
+                1500: {
+                  slidesPerView: 5,
+                  spaceBetween: 13
+                }
+              },
+              navigation: {
+                nextEl: this.querySelector('.swiper-button.button-next'),
+                prevEl: this.querySelector('.swiper-button.button-prev'),
+              },
+            });
+          }, 100);
+        }
+      }
+    );
+  }
+
+  if(!customElements.get('col-title')) {
+    customElements.define(
+      'col-title',
+      class ColTitle extends HTMLElement {
+        constructor() {
+          super();
+        }
+
+        connectedCallback() {
+          this.addEventListener("click", () => {
+            this.parentElement.querySelectorAll("col-title").forEach((el) => {
+              el.classList.toggle("selected", el == this);
+              this.parentElement.parentElement.dataset.active = this.getAttribute('col-handle');
+            });
+
+            this.parentElement.parentElement.querySelectorAll(".button_text_wrapper").forEach((el) => {
+              el.classList.toggle("selected", el.dataset.id == this.dataset.id);
+            });
+            this.handle = this.getAttribute("col-handle");
+            this.section_url = `${window.location.origin}/collections/${this.handle}?section_id=product_slider`;
+            let handle = this.handle;
+            let destinationEl = this.parentElement.parentElement.querySelector(`[data-handle="${handle}"]`);
+            let target = this.dataset.parent;
+            console.log(destinationEl);
+            
+            if(!destinationEl) {
+              fetch(this.section_url)
+              .then((response) => response.text())
+              .then((responseText) => {
+                const html = new DOMParser().parseFromString(responseText, 'text/html');
+                console.log('{{_section}}');
+                const destination = document.querySelector(`${target} .pd_slider_main_part`);
+                const source = html.querySelector('.pd_slider_main_part');
+                destination.append(source);
+              }); 
+            }
+          });
+        }
+      }
+    )
+  }
+  
+</script>
+
+{%- endcapture -%}
+
+{{- section_content | remove: '  ' | strip_newlines -}}
+
+{% schema %}
+  {
+    "name": "Shop by Collections",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "color",
+        "id": "bkcolor",
+        "label": "Section Background Colour",
+        "default": "#FFFFFF"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Collection Title"
+          },
+          {
+            "type": "checkbox",
+            "id": "highlight",
+            "label": "Check to highlight title",
+            "default": false
+          },
+          {
+            "type": "text",
+            "id": "btn_txt",
+            "label": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button Url"
+          },
+          {
+            "type": "text",
+            "id": "under_btn_txt",
+            "label": "Text under the Button"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Shopby Collections (Default)",
+        "blocks": [
+          {
+            "type": "collection",
+            "settings": {
+              "collection": "best-sellers",
+              "heading": "BESTSELLER",
+              "highlight": false,
+              "btn_txt": "SHOP ALL BESTSELLERS",
+              "under_btn_txt": "FREE SHIPPING OVER £40"
+            }
+          },
+          {
+            "type": "collection",
+            "settings": {
+              "collection": "new",
+              "heading": "NEW IN",
+              "highlight": false,
+              "btn_txt": "SHOP ALL NEW IN",
+              "under_btn_txt": "FREE SHIPPING OVER £40"
+            }
+          },
+          {
+            "type": "collection",
+            "settings": {
+              "collection": "sale",
+              "heading": "ON SALE",
+              "highlight": true,
+              "btn_txt": "SHOP ALL Sale",
+              "under_btn_txt": "FREE SHIPPING OVER £40"
+            }
+          }
+        ],
+        "settings": {
+          "heading": "Shop by",
+          "bkcolor": "#eef7ff"
+        }
+      }
+    ]
+  }
+{% endschema %}

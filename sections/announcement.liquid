@@ -1,0 +1,69 @@
+{% assign _ss = section.settings %}
+{% assign _section = section.id | split: '__' | last | slice: -4, 4 | prepend: '#anbar_' %}
+
+{%- capture section_content -%}
+<style>
+    {{ _section }} .section_holder {
+        background: {{ _ss.bg_color }};
+    }
+
+    {{ _section }} .swiper-slide {
+        text-align: center;
+        padding: 12px 0;
+        font: normal normal normal 13px/16px Neue Haas Grotesk Text Pro;
+        height: 38px;
+        text-transform: uppercase;
+        color: {{ _ss.color }};
+    }
+
+    {{ _section }} .swiper-slide a {
+        font-weight: 400;
+        text-decoration: underline;
+        color: {{ _ss.color }};
+    }
+
+    @media screen and (max-width: 900px) {
+        {{ _section }} .swiper-slide {
+            font-size: 12px;
+        }
+
+
+    }
+
+</style>
+
+<div id="anbar_{{ section.id | split: '__' | last | slice: -4, 4 }}">
+    <div class="section_holder">
+        <div class="annbar_swiper swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="/" title="App">Get 10% Off When You Download Our App!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%- endcapture -%}
+
+{{- section_content | remove: '  ' | strip_newlines -}}
+
+{% schema %}
+    {
+        "name": "Announcement Slider",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color",
+                "label": "Message color",
+                "default": "#ffffff"
+            },
+            {
+                "type": "color",
+                "id": "bg_color",
+                "label": "Background color",
+                "default": "#000000"
+            }
+        ],
+        "blocks": []
+    }
+{% endschema %}
