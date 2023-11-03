@@ -29,14 +29,38 @@
             "btn_url": "shopify:\/\/collections\/hydrogen",
             "under_btn_txt": "FREE UK SHIPPING OVER £40"
           }
+        },
+        "de0b15a1-b177-4717-93de-ac4267a6cd41": {
+          "type": "collection",
+          "settings": {
+            "collection": "hydrogen",
+            "heading": "BESTSELLER",
+            "highlight": false,
+            "btn_txt": "SHOP ALL BESTSELLERS",
+            "btn_url": "shopify:\/\/collections\/hydrogen",
+            "under_btn_txt": "FREE UK SHIPPING OVER £40"
+          }
+        },
+        "4b905dde-96df-44a4-b7e1-22b9f10dc6b9": {
+          "type": "collection",
+          "settings": {
+            "collection": "hydrogen",
+            "heading": "BESTSELLER",
+            "highlight": false,
+            "btn_txt": "SHOP ALL BESTSELLERS",
+            "btn_url": "shopify:\/\/collections\/hydrogen",
+            "under_btn_txt": "FREE UK SHIPPING OVER £40"
+          }
         }
       },
       "block_order": [
-        "8baba8f4-27b7-4005-a7f8-7365f59fb1e4"
+        "8baba8f4-27b7-4005-a7f8-7365f59fb1e4",
+        "de0b15a1-b177-4717-93de-ac4267a6cd41",
+        "4b905dde-96df-44a4-b7e1-22b9f10dc6b9"
       ],
       "settings": {
         "heading": "",
-        "bkcolor": "#FFFFFF"
+        "bkcolor": "#ffffff"
       }
     }
   }

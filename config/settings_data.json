@@ -1,5 +1,129 @@
 {
-  "current": {},
+  "current": {
+    "sections": {
+      "announcement": {
+        "type": "announcement",
+        "settings": {
+          "color": "#ffffff",
+          "bg_color": "#000000"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "main-menu": "main-menu"
+        }
+      },
+      "mobile_menu": {
+        "type": "mobile_menu",
+        "blocks": {
+          "961ee403-0ae7-4e8b-a47e-485002c89475": {
+            "type": "one-column",
+            "settings": {
+              "title": "One Column Menu",
+              "links": "footer"
+            }
+          }
+        },
+        "block_order": [
+          "961ee403-0ae7-4e8b-a47e-485002c89475"
+        ],
+        "settings": {
+          "mobile_menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "e5c4d40d-5ff3-41d6-ba00-448e276815ea": {
+            "type": "newsletter",
+            "settings": {
+              "title": "Join the pack",
+              "plh_txt": "Email Address",
+              "sub_txt": "GET 15% OFF",
+              "desc": "<p>Sign up for the latest updates and <span>GET 15% OFF<\/span> your next order.<\/p>"
+            }
+          },
+          "898d9154-1dfe-4c12-a465-072901e89ba2": {
+            "type": "linklist",
+            "settings": {
+              "title": "SHOP",
+              "links": "footer"
+            }
+          },
+          "ed2817f6-bc31-4c47-b234-799fea284c62": {
+            "type": "term",
+            "settings": {
+              "links": "main-menu"
+            }
+          }
+        },
+        "block_order": [
+          "e5c4d40d-5ff3-41d6-ba00-448e276815ea",
+          "898d9154-1dfe-4c12-a465-072901e89ba2",
+          "ed2817f6-bc31-4c47-b234-799fea284c62"
+        ],
+        "settings": {
+          "warn": "* these statements have not been evaluated by the food and drug administration. this product is not intended to diagnose, treat, cure or prevent any disease.",
+          "newsletter": ""
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "blocks": {
+          "71ed7375-7d7b-4e47-811d-9d51e61af031": {
+            "type": "empty",
+            "settings": {
+              "heading": "Your cart is empty",
+              "desc": "Let's create memories with <wbr> your furry friend<\/wbr>",
+              "upsell_heading": "Try Our BestSeller Harnesses",
+              "collection": "umg-challenge",
+              "limit": 7,
+              "cta_text": "SHOP ALL",
+              "cta_target": "",
+              "annouce": "FREE UK SHIPPING OVER £40"
+            }
+          },
+          "691453be-869c-4b8d-b3f2-c6df85894f03": {
+            "type": "desktop-shop",
+            "settings": {
+              "img": "shopify:\/\/shop_images\/fall-vegetable-box.jpg",
+              "heading": "For Falls",
+              "link": "shopify:\/\/collections\/automated-collection"
+            }
+          },
+          "6ae000a9-3afd-4563-bfae-6f3517b13d17": {
+            "type": "desktop-shop",
+            "settings": {
+              "img": "shopify:\/\/shop_images\/close-up-of-a-person-arm-wearing-a-smartwatch.jpg",
+              "heading": "For Accessories",
+              "link": "shopify:\/\/collections\/hydrogen"
+            }
+          }
+        },
+        "block_order": [
+          "71ed7375-7d7b-4e47-811d-9d51e61af031",
+          "691453be-869c-4b8d-b3f2-c6df85894f03",
+          "6ae000a9-3afd-4563-bfae-6f3517b13d17"
+        ],
+        "settings": {
+          "upsell_heading": "You would also love...",
+          "upsell_products": [
+            "the-3p-fulfilled-snowboard",
+            "the-collection-snowboard-hydrogen",
+            "the-collection-snowboard-liquid",
+            "the-collection-snowboard-oxygen",
+            "the-compare-at-price-snowboard"
+          ],
+          "freeshipping": 40,
+          "freeshipping_message": "ORDERS OVER £40 RECEIVE UK FREE SHIPPING",
+          "ship_more": "Add <span>[ShipMore]<\/span> to unlock <span>Free Shipping<\/span>",
+          "congrat": "Congrats! You've earned <strong>FREE SHIPPING<\/strong>"
+        }
+      }
+    },
+    "content_for_index": []
+  },
   "presets": {
     "Default": {}
   }

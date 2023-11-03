@@ -783,7 +783,7 @@
 {% endcapture %}
 
 <div id="product_{{ section.id | split: '__' | last | slice: -4, 4 }}">
-  <nUMG-product class="product_holder">
+  <numg-product class="product_holder">
     <div class="product_media_wrapper">
       <div class="thumbslider">
         <div class="button-prev">
@@ -1011,7 +1011,7 @@
         </span>
       </div>
     </div>
-  </nUMG-product>
+  </numg-product>
 </div>
 
 {% unless product == empty %}
@@ -1328,16 +1328,6 @@
       })
       .then(res => res.json())
       .then(res => {
-        ttq.track('AddToCart', {
-          content_id: res.sku,
-          content_type: 'product',
-          content_name: res.title,
-          quantity: res.quantity,
-          price: res.price / 100,
-          value: res.price * res.quantity / 100,
-          currency: '{{ cart.currency.iso_code }}',
-        });
-        document.dispatchEvent(_UMG.pixelEvent.cart);
         _UMG.cartElement.renderContents(res);
       });
     }
