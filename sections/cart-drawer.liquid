@@ -723,7 +723,7 @@
           sections: _UMG.cartElement.getSectionsToRender().map((section) => section.id),
         };
         console.log(body);
-
+        show_loading();
         fetch('/cart/add.js', {
           method: 'POST',
           headers: {
@@ -734,6 +734,7 @@
         .then(res => res.json())
         .then(res => {
           _UMG.cartElement.renderContents(res);
+          show_loading(true);
         });
       });
     }

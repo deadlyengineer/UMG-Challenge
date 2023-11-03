@@ -58,6 +58,7 @@ class CartItems extends HTMLElement {
 
   onCartUpdate() {
     if (this.tagName === "CART-DRAWER-ITEMS") {
+      show_loading();
       fetch(`${_UMG.shopSettings.routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
@@ -73,11 +74,13 @@ class CartItems extends HTMLElement {
               targetElement.replaceWith(sourceElement);
             }
           }
+          show_loading(false);
         })
         .catch((e) => {
           console.error(e);
         });
     } else {
+      show_loading();
       fetch(`${_UMG.shopSettings.routes.cart_url}?section_id=main-cart-items`)
         .then((response) => response.text())
         .then((responseText) => {
@@ -87,6 +90,7 @@ class CartItems extends HTMLElement {
           );
           const sourceQty = html.querySelector("cart-items");
           this.innerHTML = sourceQty.innerHTML;
+          show_loading(false);
         })
         .catch((e) => {
           console.error(e);
@@ -128,7 +132,7 @@ class CartItems extends HTMLElement {
       sections: this.getSectionsToRender().map((section) => section.section),
       sections_url: window.location.pathname,
     });
-
+    show_loading();
     fetch(`${_UMG.shopSettings.routes.cart_change_url}`, {
       ...fetchConfig(),
       ...{ body },
@@ -232,6 +236,7 @@ class CartItems extends HTMLElement {
       })
       .finally(() => {
         this.disableLoading(line);
+        show_loading(false);
       });
   }
 

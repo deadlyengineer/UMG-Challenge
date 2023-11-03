@@ -645,6 +645,16 @@
         font: normal normal 900 15px/19px Basis Grotesque Pro;
         padding: 16px 0;
     }
+        
+    {{sc}} button#AddToCart.loading,
+    {{sc}} button#sticky-AddToCart.loading {
+      pointer-events: none;
+      background-color: #9F9F9F;
+    }
+    {{sc}} button#AddToCart.loading span,
+    {{sc}} button#sticky-AddToCart.loading  span {
+      visibility: hidden;
+    }
     
     {{sc}} .numg-product-form {
         margin: 0 4px;
@@ -943,12 +953,24 @@
           {% assign btn_class = 'available-sold' %}
         {% endif %}
         <button type="submit" name="add" id="AddToCart"
-          class="btn {{ btn_class }}">
+          class="btn {{ btn_class }} button">
           {% if product.available %}
             <span id="AddToCartText">ADD TO CART -&nbsp;</span>
             <span id="AddToCartPrice">
               {{ product.selected_or_first_available_variant.price | money }}
             </span>
+            <div class="loading-overlay__spinner">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                role="presentation"
+                class="spinner"
+                viewBox="0 0 66 66"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
           {% else %}
             Sold Out  
           {% endif %}
@@ -1302,6 +1324,8 @@
     }
 
     addToCart(soldOut=false) {
+      this.atcBtn.classList.add('loading');
+      this.stickyAtcBtn.classList.add('loading');
       if(soldOut) return null;
       const properties = {};
       this.productForm.querySelectorAll('input').forEach(input => {
@@ -1318,7 +1342,7 @@
       };
 
       console.log(body);
-
+      show_loading();
       fetch('/cart/add.js', {
         method: 'POST',
         headers: {
@@ -1329,6 +1353,11 @@
       .then(res => res.json())
       .then(res => {
         _UMG.cartElement.renderContents(res);
+      })
+      .finally(() => {
+        this.atcBtn.classList.remove('loading');
+        this.stickyAtcBtn.classList.remove('loading');
+        show_loading(false);
       });
     }
 

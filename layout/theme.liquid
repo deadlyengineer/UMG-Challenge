@@ -35,6 +35,27 @@
       overflow: hidden;
     }
 
+    img#loading_overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+    }
+    #whole_overlay {
+      position: fixed;
+      z-index: 9999;
+      width: 100vw;
+      height: 100vh;
+      visibility: hidden;
+      pointer-events: none;
+      top: 0;
+    }
+    #whole_overlay.loading {
+      visibility: visible;
+      pointer-events: all;
+    }
+
   </style>
   <script>
     window._UMG = {
@@ -131,7 +152,9 @@
             }, timeout);
         }
     }
-
+    function show_loading(show=true) {
+      document.querySelector('#whole_overlay').classList.toggle('loading', show);
+    }
   </script>
 </head>
 <body>
@@ -152,5 +175,8 @@
   </main>
 
   {% section 'footer' %}
-</body>
+  <div id="whole_overlay">
+    <img src="{{ 'loading.gif' | asset_url }}" id="loading_overlay">
+  </div>
+  </body>
 </html>
