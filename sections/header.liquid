@@ -100,6 +100,10 @@
         user-select: none;
     }
 
+    {{ _section }} .header_cta.cta {
+      position: relative;
+    }
+    
     {{ _section }} .cart_icon.not_empty {
         position: relative;
     }
@@ -306,8 +310,16 @@
                 </a>
                 {% endif %}
 
-                <a href="/cart" class="cart_icon {% if cart.items.size > 0 %}not_empty{% endif %}">
+                <a href="/cart" class="header_cta cart cart_icon {% if cart.items.size > 0 %}not_empty{% endif %}" id="cart-icon-bubble">
                     <img src="{{ 'cart.svg' | asset_url }}" alt="" class="cart">
+                    {%- if cart != empty -%}
+                        <div class="cart-count-bubble">
+                            {%- if cart.item_count < 100 -%}
+                            <span aria-hidden="true">{{ cart.item_count }}</span>
+                            {%- endif -%}
+                            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+                        </div>
+                    {%- endif -%}
                 </a>
 
                 <div id="SearchContainer">

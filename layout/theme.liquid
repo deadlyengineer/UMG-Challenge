@@ -14,10 +14,138 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
   {{ 'swiper-bundle.min.js' | asset_url | script_tag }} 
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+  <style>  
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+    }  
+    body.drawer-open {
+      overflow: hidden;
+    }
+
+  </style>
+  <script>
+    window._UMG = {
+      theme: {
+        id: '{{theme.id}}',
+        name: '{{theme.name}}',
+        role: '{{theme.role}}',
+      },
+      shopSettings: {
+        shopUrl: '{{ request.origin }}',
+        cartStrings: {
+          error: `{{ 'sections.cart.cart_error' | t }}`,
+          quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+        },
+        variantStrings: {
+          addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+          soldOut: `{{ 'products.product.sold_out' | t }}`,
+          unavailable: `{{ 'products.product.unavailable' | t }}`,
+          unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+        },      
+        routes: {
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          cart_update_url: '{{ routes.cart_update_url }}',
+          cart_url: '{{ routes.cart_url }}',
+          predictive_search_url: '{{ routes.predictive_search_url }}',
+        },
+        quickOrderListStrings: {
+          itemsAdded: `{{ 'sections.quick_order_list.items_added.other' | t: quantity: '[quantity]' }}`,
+          itemAdded: `{{ 'sections.quick_order_list.items_added.one' | t: quantity: '[quantity]' }}`,
+          itemsRemoved: `{{ 'sections.quick_order_list.items_removed.other' | t: quantity: '[quantity]' }}`,
+          itemRemoved: `{{ 'sections.quick_order_list.items_removed.one' | t: quantity: '[quantity]' }}`,
+          viewCart: `{{- 'sections.quick_order_list.view_cart' | t -}}`,
+          each: `{{- 'sections.quick_order_list.each' | t: money: '[money]' }}`,
+        },
+        accessibilityStrings: {
+          imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
+          shareSuccess: `{{ 'general.share.success_message' | t }}`,
+          pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
+          playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
+          recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
+          recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
+        },
+      }
+    };
+    function isInside(point, el) {
+        const { left, right, top, bottom } = el.getBoundingClientRect();
+        const { x, y } = point;
+        // console.log(left, right, top, bottom, x, y);
+        return (left <= x && right >= x) && (top <= y && bottom >= y);
+    }
+
+    class DrawerEl extends HTMLElement {
+        constructor() {
+            super();
+
+            this.activeEls = this.childNodes;
+        }
+        
+        connectedCallback() {
+            this.addEventListener('click', (ev) => {
+                const point = {
+                    x: ev.x,
+                    y: ev.y
+                };
+
+                let isOpen = false;
+                this.activeEls.forEach(el => {
+                    isInside(point, el) ? isOpen = true : null;
+                });
+
+                !isOpen ? this.close() : null;
+            });
+        }
+
+        open() {
+            document.querySelector('body').classList.add('drawer-open');
+            this.classList.add('drawer-open');
+        }
+
+        close() {
+            document.querySelector('body').classList.remove('drawer-open');
+            this.classList.remove('drawer-open');
+        }
+
+    }
+
+    function debounce(fn, timeout=600) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+            fn.apply(this, args);
+            }, timeout);
+        }
+    }
+
+  </script>
 </head>
 <body>
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+  {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+  {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+  {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+  {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
   {% section 'announcement' %}
   {% section 'header' %}
+  {%- section 'cart-drawer' -%}
 
   <main role="main">
     {{ content_for_layout }}
