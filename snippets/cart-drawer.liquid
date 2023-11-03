@@ -1,0 +1,409 @@
+{% comment %}
+  Renders cart drawer
+
+  Usage:
+  {% render 'cart-drawer' %}
+{% endcomment %}
+
+{{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+
+{% liquid
+  assign sc = section.id | split: '__' | last | slice: -4, 4 | prepend: '#cart-drawer_'
+  assign empty = section.blocks | where: 'type', 'empty'
+  assign empty_links_desktop = section.blocks | where: 'type', 'desktop-shop'
+  assign ship_more = section.settings.freeshipping | times: 100 | minus: cart.total_price
+  if ship_more >= 0
+    assign shipping_rate = cart.total_price | divided_by: section.settings.freeshipping | append: '%'  
+  else 
+    assign shipping_rate = '100%'
+  endif
+%}
+
+{% capture freeshipping_content %}
+  <style>
+    .freeshipping-bar:after {
+      width: {{ shipping_rate }};
+    }
+  </style>
+  <div class="freeshipping-message">
+    {% if ship_more == section.settings.freeshipping %}
+      {{ section.settings.freeshipping_message }}
+  </div>
+    {% elsif ship_more > 0 %}
+      {% assign ship_more_html = ship_more | money %}
+      {{ section.settings.ship_more | replace: '[ShipMore]', ship_more_html }}
+  </div>
+  <div class="freeshipping-bar-wrapper">
+    <div class="freeshipping-bar"></div>
+    <lottie-player id="freeshipping-lottie" src="https://lottie.host/98aabaf0-4404-497a-9cb7-f1a90f1ee75e/vUh6S6zQMq.json" speed="1" style="width: 50px; height: 50px;left: {{ shipping_rate }};" loop autoplay direction="1" mode="normal"></lottie-player>
+  </div>
+    {% else %}
+      {{ section.settings.congrat }}
+  </div>
+  <div class="freeshipping-bar-wrapper">
+    <div class="freeshipping-bar"></div>
+    <lottie-player id="freeshipping-lottie" src="https://lottie.host/98aabaf0-4404-497a-9cb7-f1a90f1ee75e/vUh6S6zQMq.json" speed="1" style="width: 50px; height: 50px; left: {{ shipping_rate }};" loop autoplay direction="1" mode="normal"></lottie-player>
+  </div>
+    {% endif %}
+{% endcapture %}
+
+<style>
+  .drawer {
+    visibility: hidden;
+  }
+  {{ sc }} .empty-link:nth-child({{ empty_links.size | plus: empty_links_desktop.size }}) {
+    margin-bottom: 24px;
+  }
+</style>
+<cart-drawer id="{{ section.id | split: '__' | last | slice: -4, 4 | prepend: 'cart-drawer_' }}" class="drawer{% if cart == empty %} is-empty{% endif %}">
+  <div id="CartDrawer" class="cart-drawer">
+    <div id="CartDrawer-Overlay" class="cart-drawer__overlay" style="background:#4b4b4b88;"></div>
+    <div class="drawer__inner" role="dialog" aria-modal="true" aria-label="{{ 'sections.cart.title' | t }}" tabindex="-1">
+      <div class="drawer__inner-empty">
+        <div class="empty-header">
+          <img class="cart-closer"src="{{ 'close.svg' | asset_url }}" alt="close Cart-Drawer" onclick="_UMG.cartElement.close()">
+        </div>
+        <div class="empty-content">
+          <div class="empty-heading">
+            {{  empty[0].settings.heading }}
+          </div>
+          <div class="empty-desc">
+            {{  empty[0].settings.desc }}
+          </div>
+          <div class="empty-links">
+            {% for emptyLink in empty_links_desktop %}
+              <div class="empty-link-desktop">
+                <a href="{{ emptyLink.settings.link }}" class="empty-link-wrapper">
+                  <div class="featured_image" style="background-image:url({{ emptyLink.settings.img | img_url: '196x'}})">
+                    {% render 'round-mask' color: '#FFFFFF', size: 'small' %}
+                  </div>
+                  <span>
+                    {{ emptyLink.settings.heading }}
+                  </span>
+                </a>
+              </div>
+            {% endfor %}
+            {% for emptyLink in empty_links_desktop %}
+              <div class="empty-link">
+                <a href="{{ emptyLink.settings.link }}" class="empty-link-wrapper">
+                  <img class="empty-link-featured-image" src="{{ emptyLink.settings.img | img_url: '62x'}}" alt="{{ emptyLink.settings.heading }}" width="62px">
+                  <span>
+                    {{ emptyLink.settings.heading }}
+                  </span>
+                  <img src="{{ 'arrow.svg' | asset_url }}" alt="arrow" width="34px">
+                </a>
+              </div>
+            {% endfor %}
+            {% render 'round-mask' size: 'small', color: '#FFFFFF' %}
+            <div class="hero_paw" style="background-image:url({{ 'paw.svg' | asset_url }})"></div>
+          </div>
+          <div class="empty-upsell">
+            <div class="empty-upsell-title">
+              {{ empty[0].settings.upsell_heading }}
+            </div>
+            <empty-cart-swiper>
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  {% for item in empty[0].settings.collection.products limit: empty[0].settings.limit %}
+                    <div class="swiper-slide">
+                      <div class="upsell-wrapper">
+                        <div class="upsell-media">
+                          <img src="{{ item.featured_image | img_url: '80x' }}" alt="{{ item.title }}">
+                        </div>
+                        <div class="upsell-detail">
+                          <a href="{{ item.url }}">
+                            {{ item.title }}
+                          </a>
+                          <div class="price-wrapper">
+                            <span class="cur_price">
+                              {{ item.price | money }}
+                            </span>
+                            {% if item.compare_at_price %}
+                              <span class="compare_price">
+                                {{ item.compare_at_price | money }}
+                              </span>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="main-swiper-navigation">
+                  <div class="swiper-button button-prev">
+                    {% render 'arrow.svg' %}
+                  </div>
+                  <div class="swiper-button button-next">
+                    {% render 'arrow.svg' %}
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+            </empty-cart-swiper>
+          </div>
+        </div>
+        <div class="empty-footer">
+          <a href="{{ empty[0].settings.cta_target }}">
+            <span>{{  empty[0].settings.cta_text }}</span>
+          </a>
+          <div class="empty-annouce">
+            <img src="{{ 'Shipping-Box.svg' | asset_url }}" alt="usp_icon">
+            <span>
+              {{ empty[0].settings.annouce }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="cart-header">
+        <div class="drawer-heading">Your Cart&nbsp;<span style="color:#FD7498;">({{ cart.item_count }})</span></div>
+        <img class="cart-closer"src="{{ 'close.svg' | asset_url }}" alt="close Cart-Drawer" onclick="_UMG.cartElement.close()">
+      </div>
+      {% if section %}
+        <div class="freeshipping">
+          {{ freeshipping_content }}
+        </div>
+      {% endif %}
+      <cart-drawer-items {% if cart == empty %}class=" is-empty"{% endif %}>
+        <form action="{{ routes.cart_url }}" id="CartDrawer-Form" class="cart__contents cart-drawer__form" method="post">
+          <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
+            {%- if cart != empty -%}
+              <div class="drawer__cart-items-wrapper">
+                <div class="cart-items">
+                  {% for item in cart.items %}
+                    <div id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart_item" role="row">
+                      <div class="cart_item__media">
+                        {% if item.image %}
+                          {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+                          <img class="cart_item__image" src="{{ item.image | image_url: width: 300 }}" alt="{{ item.image.alt | escape }}" width="76" height="76" >
+                        {% endif %}
+                      </div>
+                      <div class="cart_item__details">
+                        {%- if settings.show_vendor -%}
+                          <p class="caption-with-letter-spacing light">{{ item.product.vendor }}</p>
+                        {%- endif -%}
+                        <a href="{{ item.url }}" class="cart_item__name h4 break">
+                          {{- item.product.title | escape -}}
+                        </a>
+                        {% if settings.show_options %}
+                        {% for option in item.options_with_values %}
+                          <div class="option-wrapper">
+                            <div class="option_name">
+                              {{ option.name }}:
+                            </div>
+                            <div class="option_value">
+                              {{ option.value }}
+                            </div>
+                          </div>
+                        {% endfor %}
+                        {% for property in item.properties %}
+                          {% unless property[0] contains '_' %}
+                            <div class="option-wrapper">
+                              <div class="option_name">
+                                {{ property[0] }}:
+                              </div>
+                              <div class="option_value">
+                                {{ property[1] }}
+                              </div>
+                            </div>
+                          {% endunless %}
+                        {% endfor %}
+                        {% endif %}
+                        <div class="price_wrapper">
+                          <span class="cur_price">
+                            {{ item.final_price | money }}
+                          </span>
+                          {% if item.original_price > item.final_price %}
+                            <span class="compare_price">
+                              {{ item.original_price | money }}
+                            </span>
+                          {% endif %}
+                        </div>
+                        <div class="cart_item__quantity">
+                          <quantity-popover>
+                            <div class="cart_item__quantity-wrapper quantity-popover-wrapper">
+                              <quantity-input class="cart_quantity">
+                                <button class="quantity__button no-js-hidden" name="minus" type="button">
+                                  <span class="visually-hidden">
+                                    {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
+                                  </span>
+                                  {% render 'icon-minus' %}
+                                </button>
+                                <input class="quantity__input" type="number" data-quantity-variant-id="{{ item.variant.id }}" name="updates[]" value="{{ item.quantity }}" data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}" min="{{ item.variant.quantity_rule.min }}" {% if item.variant.quantity_rule.max != null %} max="{{ item.variant.quantity_rule.max }}" {% endif %} step="{{ item.variant.quantity_rule.increment }}" aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}" id="Drawer-quantity-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                                <button class="quantity__button no-js-hidden" name="plus" type="button">
+                                  <span class="visually-hidden">
+                                    {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
+                                  </span>
+                                  {% render 'icon-plus' %}
+                                </button>
+                              </quantity-input>
+                              <cart-remove-button id="CartDrawer-Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                                <span>
+                                  REMOVE
+                                </span>
+                              </cart-remove-button>
+                            </div>
+                          </quantity-popover>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {%- endif -%}
+            <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
+            <p id="CartDrawer-LineItemStatus" class="visually-hidden" aria-hidden="true" role="status">
+              {{ 'accessibility.loading' | t }}
+            </p>
+          </div>
+          <div id="CartDrawer-CartErrors" role="alert"></div>
+        </form>
+      </cart-drawer-items>
+      <div class="cart-upsell-produts">
+        <div class="cart-upsell-heading">
+          {{ section.settings.upsell_heading }}
+        </div>
+        {% capture cart_items %}
+          {%- for item in cart.items -%}
+            {{- item.product.id -}},
+          {%- endfor- %}
+        {% endcapture %}
+        <upsell-cart-swiper>
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {%- for item in cart.items -%}
+                {%- if item.product.metafields.umg.upsell_product.value-%}
+                  {%- assign upsell_product = item.product.metafields.umg.upsell_product.value -%}
+                  {% unless cart_items contains upsell_product.id %}
+                    {%- capture upsell_products_html -%}
+                      {{- upsell_products_html -}}
+                      <div class="swiper-slide" data-id="{{ upsell_product.id }}">
+                        <div class="upsell_product">
+                          <div class="upsell_product_media" style="background-image: url({{ upsell_product.featured_image | img_url: '200x' }});"> </div>
+                          <div class="upsell_product_detail">
+                            <a href="{{ upsell_product.url }}">
+                              {{ upsell_product.title }}
+                            </a>
+                            <div class="price-wrapper">
+                              <span class="cur_price">
+                                {{ upsell_product.price | money }}
+                              </span>
+                              {%- if upsell_product.compare_at_price -%}
+                                <span class="compare_price">
+                                  {{ upsell_product.compare_at_price | money }}
+                                </span>
+                              {%- endif -%}
+                            </div>
+                            {%- if upsell_product.first_available_variant -%}
+                              <upsell-atc class="ATC_cta">
+                                {%- if upsell_product.variants.size > 1 -%}
+                                  <select name="upsell_product-{{locksmith_244e_forloop__index}}" id="upsell_product-{{locksmith_244e_forloop__index}}">
+                                    {%- for upsell_variant in upsell_product.variants -%}
+                                      {%- if upsell_variant.available -%}
+                                        <option value="{{ upsell_variant.id }}" {%- if upsell_product.first_available_variant.id == upsell_variant.id -%}selected{%- endif -%}>
+                                          {{ upsell_variant.title }}
+                                        </option>
+                                      {%- endif -%}
+                                    {%- endfor -%}
+                                  </select>
+                                {%- endif -%}
+                                <div class="upsell_atc" data-id="{{upsell_product.first_available_variant.id}}">
+                                  <span>ADD</span>
+                                  <img src="{{ 'plus.svg' | asset_url }}" alt="plus">
+                                </div>
+                              </upsell-atc>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
+                    {%- endcapture -%}
+                  {% endunless %}
+                {%- endif -%}
+              {%- endfor -%}
+              {{ upsell_products_html }}
+            </div>
+            <div class="main-swiper-navigation">
+              <div class="swiper-button button-prev">
+                {% render 'arrow.svg' %}
+              </div>
+              <div class="swiper-button button-next">
+                {% render 'arrow.svg' %}
+              </div>
+            </div>
+          </div>
+        </upsell-cart-swiper>
+      </div>
+      <div class="cart_drawer__footer">
+        <div class="cart_drawer__subtotal">
+          <span>
+            Subtotal
+          </span>
+          <div class="price_wrapper">
+            <span class="cur_price">
+              {{ cart.total_price | money }}
+            </span>
+            {% if cart.original_total_price > cart.total_price %}
+              <span class="compare_price">
+                {{ cart.original_total_price | money }}
+              </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="cart_drawer__ctas">
+          <noscript>
+            <button type="submit" class="cart__update-button button button--secondary" form="CartDrawer-Form">
+              {{ 'sections.cart.update' | t }}
+            </button>
+          </noscript>
+
+          <button type="submit" id="CartDrawer-Checkout" class="cart__checkout-button" name="checkout" form="CartDrawer-Form" {% if cart == empty %}disabled{% endif %}>
+            <img src="{{ 'lock.svg' | asset_url }}" alt="lock" width="15px" height="23px" style="margin-right:8px">
+            <span>Continue to checkout</span>
+          </button>
+          <script>
+          </script>
+          <div class="divided_by">
+            <span>Make 3 payments of&nbsp;</span>
+            <span class="cur_price">{{ cart.total_price | divided_by: 3 | money }}</span>
+            <svg style="height: 20px; width: 85px;">
+              <use xlink:href="#shopify-svg__payments_shop_pay"></use>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</cart-drawer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function isIE() {
+      const ua = window.navigator.userAgent;
+      const msie = ua.indexOf('MSIE ');
+      const trident = ua.indexOf('Trident/');
+
+      return msie > 0 || trident > 0;
+    }
+
+    if (!isIE()) return;
+    const cartSubmitInput = document.createElement('input');
+    cartSubmitInput.setAttribute('name', 'checkout');
+    cartSubmitInput.setAttribute('type', 'hidden');
+    document.querySelector('#cart').appendChild(cartSubmitInput);
+    document.querySelector('#checkout').addEventListener('click', function (event) {
+      document.querySelector('#cart').submit();
+    });
+  });
+  setInterval(() => {
+    const freeShippingLottie = document.querySelector('.freeshipping-bar-wrapper lottie-player');
+    if(freeShippingLottie) {
+      const freeLottieRoot = freeShippingLottie.shadowRoot;
+      freeLottieRoot.querySelectorAll('g > path').forEach(el => el.setAttribute('fill', '#FD7498'));
+    }
+  }, 1000);
+</script>
